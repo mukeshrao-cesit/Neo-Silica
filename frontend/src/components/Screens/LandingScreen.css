@@ -1,0 +1,91 @@
+.MainDiv {
+  border: solid 3px rgb(0, 0, 0);
+}
+.leftDiv {
+  width: 15%;
+  background-color: rgb(240, 118, 18);
+  display: flex;
+  justify-content: center;
+
+}
+.rightDiv {
+  width: 80%;
+  border: solid 3px rgb(43, 23, 23);
+  display: flex;
+  justify-content: center;
+
+}
+.Seconddiv {
+  display: flex;
+  justify-content: center;
+
+  height: 900px;
+}
+.tools {
+  height: 70px;
+  color: chocolate;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 50PX;
+  padding-right: 50PX;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.leftInner{
+    margin-top: 30px;
+    width: 90%;
+}
+.paperhead1{
+    font-size: 24px;
+    font-weight: bolder;
+    color: rgb(94, 53, 75);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.modalInner{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+.formInner{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.form-seperate{
+  width: 40%;
+  height: 250px;
+  border: 1px solid rgb(150, 126, 126);
+  display: flex;
+  flex-direction: column;
+  justify-content: sp;
+}
+.testname{
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.testF{
+  display: flex;
+  justify-content: space-between;
+}
+.form-seperate3{
+  width: 10%;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.fs-1{
+  height: 40%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5Px;
+}
+.shapeImage{
+width: 40%;
+border: 1px solid black;
+}
+.headS{
+  color: red;
+  margin-left: 10px;
+}

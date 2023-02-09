@@ -1,0 +1,36 @@
+.papermainDiv{
+    display: flex;
+    width: 100%;
+    height: 900px;
+    border: solid black 3px;
+}
+.paperleftDiv{
+    width: 17%;
+    border: 3px solid rgb(0, 0, 0);
+    height: 900px;
+    /* background-color: chocolate; */
+}
+.papermidtDiv{
+    width: 100%;
+    border: 2px solid rgb(12, 0, 0);
+    height: 900px;
+    
+}
+
+.paperrightDiv{
+    width: 17%;
+    border: 1px solid rgb(0, 0, 0);
+    height: 900px;
+}
+.PaperTool{
+    height: 50px;
+    border: solid yellow;
+}
+.paperhead{
+    height: 50px;
+    background-color: rgb(155, 74, 15);
+    color: white;
+    font-size: xx-large;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding-left: 40px;
+}
