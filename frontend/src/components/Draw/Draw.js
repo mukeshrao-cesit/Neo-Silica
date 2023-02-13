@@ -139,13 +139,11 @@ function App() {
     //           }
     //         }
     // getdata()
-    var total = $("#total");
     setPaper(
       new dia.Paper({
         el: $("#paper"),
-        width: "100px",
-        height: "100px",
-
+        width: "100%",
+        height: "100vh",
         model: graph,
         cellViewNamespace: shapes,
         background: {
@@ -153,7 +151,7 @@ function App() {
           image: savedpaper.image,
           // image: 'https://healthcoach-fitness.s3.amazonaws.com/image3-1656269937815.png',
           position: { x: 0, y: 0 },
-          size: { width: 1200, height: 1000 },
+          size: { width: 900, height: 600 },
         },
         defaultLink: () =>
           new dia.Link({
@@ -981,9 +979,9 @@ function App() {
   return (
     <div className="main-div">
       <Row className="main-row ">
-        <Col className="col1">
+        <div className="col1">
           <div id="stencil"></div>
-        </Col>
+        </div>
         <Col id="total" className="col2">
           <Tools
             downloadImage={downloadImage}
