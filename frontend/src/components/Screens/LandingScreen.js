@@ -39,11 +39,8 @@ import {
 } from "../Draw/Shapes.js";
 import "./LandingScreen.css";
 
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
 
-const ExpandMore = styled((props: ExpandMoreProps) => {
+const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
@@ -134,7 +131,7 @@ const LandingScreen = () => {
   }, []);
 
   const papersAll = useSelector((state) => state.paper.papers);
-  console.log("paeperer", papersAll);
+  console.log("All papers", papersAll);
   useEffect(() => {
     dispatch({ type: types.FETCH_PAPER_START });
   }, [deleteStatus]);
@@ -425,7 +422,7 @@ const LandingScreen = () => {
           <Row style={{ width: "90%" }}>
             {papersAll &&
               papersAll.map((item) => (
-                <Col className="mt-3" sm={1} md={3} xl={2}>
+                <Col className="mt-3" sm={1} md={3} xl={2} key={item._id}>
                   <Card sx={{ maxWidth: 250 }}>
                     <CardHeader
                       avatar={
@@ -449,12 +446,10 @@ const LandingScreen = () => {
                     />
                     <CardContent></CardContent>
                     <CardActions disableSpacing>
-                      <IconButton aria-label="add to favorites">
-                        <DeleteIcon
-                          onClick={() => {
+                      <IconButton aria-label="add to favorites" onClick={() => {
                             deletePaperHandler(item._id);
-                          }}
-                        />
+                          }}>
+                        <DeleteIcon/>
                       </IconButton>
                       <IconButton aria-label="share">
                         <Link to={`/paper/${item._id}`}>

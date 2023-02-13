@@ -12,6 +12,7 @@ const PaperScreen = () => {
   );
   const params = useParams();
   const [jsonData, setJsonData] = useState();
+  const [savedpaper, setSavedPaper] = useState({});
 
   useEffect(() => {
     setPaper(
