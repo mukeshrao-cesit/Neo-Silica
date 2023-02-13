@@ -143,8 +143,8 @@ function App() {
     setPaper(
       new dia.Paper({
         el: $("#paper"),
-        width: "100px",
-        height: "100px",
+        width: "100vh",
+        height: "80%",
 
         model: graph,
         cellViewNamespace: shapes,
