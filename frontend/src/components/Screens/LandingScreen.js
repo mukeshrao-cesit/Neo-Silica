@@ -36,7 +36,7 @@ import {
   rectangleShape,
   rhombusShape,
   EllipseShape,
-} from "../Shapes";
+} from "../Draw/Shapes.js";
 import "./LandingScreen.css";
 
 interface ExpandMoreProps extends IconButtonProps {

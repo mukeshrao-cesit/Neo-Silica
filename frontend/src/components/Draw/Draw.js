@@ -1,5 +1,5 @@
 import { dia, elementTools, shapes, util } from "@clientio/rappid";
-import ClearIcon from '@mui/icons-material/Clear';
+
 import html2canvas from "html2canvas";
 import $ from "jquery";
 import jsPDF from "jspdf";
@@ -7,19 +7,16 @@ import { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import Modal from "react-modal";
 import { Link, useParams } from "react-router-dom";
-import axios from "../util/axiosConfig.js";
-import "./App.css";
+import axios from "../../util/axiosConfig";
 import "./Draw.css";
 import {
   fadeAutoPort1,
   fadeAutoPort2,
   faderPort1,
-  faderPort2
-} from "./Ports.js";
-import {
-  FadeAux,
-  Fader, sales
-} from "./Shapes.js";
+  faderPort2,
+} from "../Ports.js";
+import { FadeAux, Fader, sales } from "./Shapes.js";
+import Tools from "./Tools.jsx";
 
 function App() {
   var c = 0;
@@ -111,16 +108,16 @@ function App() {
     };
     fetchData();
     return () => {
-        let jsonObject = graph.toJSON();
-        console.log(">>>>", jsonObject);
-        let jsonString = JSON.stringify(jsonObject);
+      let jsonObject = graph.toJSON();
+      console.log(">>>>", jsonObject);
+      let jsonString = JSON.stringify(jsonObject);
 
-        if (navigator.onLine) {
-          const { data } =  axios.post(`/paper/${params.id}`, {
-            data: jsonString,
-          });
-        }
-  }
+      if (navigator.onLine) {
+        const { data } = axios.post(`/paper/${params.id}`, {
+          data: jsonString,
+        });
+      }
+    };
   }, []);
   useEffect(() => {
     // TO SEND GRAPH DATA TO BACKEND WHEN INTERNETS COME BACK
@@ -146,8 +143,9 @@ function App() {
     setPaper(
       new dia.Paper({
         el: $("#paper"),
-        width: "100%",
-        height: "1000px",
+        width: "100px",
+        height: "100px",
+
         model: graph,
         cellViewNamespace: shapes,
         background: {
@@ -270,7 +268,7 @@ function App() {
       defaults: util.deepSupplement(
         {
           type: "standard.Fader",
-          res:"hiii",
+          res: "hiii",
           position: {
             x: 60,
             y: 530,
@@ -433,23 +431,23 @@ function App() {
         el: $("#stencil"),
         model: stencilGraph,
         interactive: false,
-        height: "920px",
-        width: "300px",
+        height: "100vh",
+        width: "100%",
       });
     const fetchData = async () => {
       const { data } = await axios.get(`/shapes`);
       let count = 1;
       let x;
-      let y = 10;
+      let y = 15;
       data.map((item, index) => {
         if (index % 2 == 0) {
-          x = 10;
+          x = 15;
         } else {
           x = 150;
         }
         let shape = JSON.parse(item.shapedata);
         shape.position = { x: x, y: y };
-        shape.level=item.level
+        shape.level = item.level;
         stencilGraph.addCell(shape);
         if (index % 2 !== 0) {
           y = y + 100;
@@ -458,7 +456,6 @@ function App() {
     };
     fetchData();
 
-    
     // stencilGraph.addCells([
     //   rectangleShape,
     //   circleShape,
@@ -895,12 +892,11 @@ function App() {
     setZoomCount(zoomCount + 1);
   };
 
-
   // TO ADD VERTICAL LINE
   const handleAddLine = () => {
     var shadowLink = new shapes.standard.Link();
-    shadowLink.prop("source", { x: 700, y: 70 });
-    shadowLink.prop("target", { x: 700, y: 750 });
+    shadowLink.prop("source", { x: 300, y: 70 });
+    shadowLink.prop("target", { x: 300, y: 300 });
     shadowLink.attr("line", { targetMarker: { type: "none" } });
     shadowLink.label(0, {
       markup: [
@@ -926,7 +922,7 @@ function App() {
         distance: 0, // midway on the connection path
         offset: {
           x: 0, // 10 local x units to the right
-          y: 650, // 5 local y units above
+          y: 250, // 5 local y units above
         },
 
         args: {
@@ -985,65 +981,25 @@ function App() {
   return (
     <div className="main-div">
       <Row className="main-row ">
-        <Col className="col1" sm={12} md={12} lg={2} xl={2}>
+        <Col className="col1">
           <div id="stencil"></div>
         </Col>
-        <Col id="total" className="col2" sm={12} md={8} lg={8} xl={8}>
-          <div className="tools">
-            <button
-              style={{ width: "50px", height: "50px", border: "none" }}
-              onClick={downloadImage}
-            >
-              <img
-                width={"100%"}
-                height={"100%"}
-                src="/images/download2.png"
-              ></img>
-            </button>
-            <Button onClick={handleAddLine} variant="outline-info">
-              INSERT LINE
-            </Button>
-            <Button onClick={handleUndo} variant="outline-info">
-              <img width={"30px"} height={"30px"} src="/images/undo.png"></img>
-            </Button>
-            <Button onClick={handleRedo} variant="outline-info">
-              <img width={"30px"} height={"30px"} src="/images/redo.png"></img>
-            </Button>
-            <Button  onClick={()=>graph.clear()} variant="outline-error">
-             <ClearIcon/>
-            </Button>
-            <Button
-              style={{ marginLeft: "20px" }}
-              onClick={zoomOut}
-              variant="outline-warning"
-            >
-              <img width={"30px"} height={"30px"} src="/images/out.png"></img>
-            </Button>
-
-            <Button
-              style={{ marginRight: "400px" }}
-              onClick={zoomIn}
-              variant="outline-warning"
-            >
-              <img width={"30px"} height={"30px"} src="/images/in.png"></img>
-            </Button>
-            <Link to={`/diagram/${params.id}`}>
-              {" "}
-              <Button
-                style={{ marginRight: "400px" }}
-                onClick={zoomIn}
-                variant="outline-warning"
-              >
-                Create Diagram
-              </Button>{" "}
-            </Link>
-            
-          </div>
+        <Col id="total" className="col2">
+          <Tools
+            downloadImage={downloadImage}
+            handleAddLine={handleAddLine}
+            handleUndo={handleUndo}
+            handleRedo={handleRedo}
+            graph={graph}
+            zoomOut={zoomOut}
+            zoomIn={zoomIn}
+            id={params.id}
+          />
           <div className="col2-div">
             <div id="paper"></div>
           </div>
         </Col>
-        <Col className="col3" sm={12} md={12} lg={2} xl={2}>
+        {/* <Col className="col3" >
           <div className="div3"></div>
           {sizeChange && (
             <div className="size">
@@ -1282,7 +1238,7 @@ function App() {
               </div>
             </>
           )}
-        </Col>
+        </Col> */}
       </Row>
       <canvas id="newcanvas2"></canvas>
       <Modal
