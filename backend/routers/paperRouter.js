@@ -34,7 +34,7 @@ router.route("/:id").post(async (req, res) => {
   const paper = await Paper.findById(req.params.id);
   paper.jsondata = req.body.data;
   await paper.save();
-  res.json({ message: "sucessfull" });
+  res.json({ message: "successful" });
 });
 
 
@@ -43,6 +43,6 @@ router.route("/:id").delete(async (req, res) => {
   console.log(paper);
   paper.jsondata = req.body.data;
   await paper.remove();
-  res.json({ message: "sucessfull" });
+  res.json({ message: "successful" });
 });
 export default router;
