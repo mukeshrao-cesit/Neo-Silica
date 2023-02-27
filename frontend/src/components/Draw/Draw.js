@@ -16,7 +16,7 @@ import {
   faderPort2,
 } from "../Ports.js";
 import { FadeAux, Fader, sales } from "./Shapes.js";
-import Tools from "./Tools.jsx";
+import Tools from "./Tools.js";
 
 function App() {
   var c = 0;
