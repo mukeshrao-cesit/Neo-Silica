@@ -14,45 +14,46 @@ const PaperScreen = () => {
   const [jsonData, setJsonData] = useState();
   const [savedpaper, setSavedPaper] = useState({});
 
+  const fetchData = async () => {
+    const { data } = await axios.get(`/paper/${params.id}`);
+    if (data.jsondata) {
+      setSavedPaper(data);
+      setJsonData(JSON.parse(data.jsondata));
+    }
+  };
+
   useEffect(() => {
+    fetchData();
     setPaper(
       new dia.Paper({
         el: $("#paper"),
         width: "100%",
-        height: "1000px",
+        height: "100%",
         model: graph,
         cellViewNamespace: shapes,
-        // background: {
-        //   color: "white",
-        //   image: "/images/d.png",
-        //   // image: 'https://healthcoach-fitness.s3.amazonaws.com/image3-1656269937815.png',
-        //   position: { x: 0, y: 0 },
-        //   size: { width: 1200, height: 1000 },
-        // },
+        background: {
+          color: "white",
+          image: savedpaper.image,
+          // image:
+          // "https://healthcoach-fitness.s3.amazonaws.com/image3-1656269937815.png",
+          position: { x: 0, y: 0 },
+          size: { width: "100%" },
+        },
         defaultLink: () =>
           new dia.Link({
             attrs: { ".marker-target": { d: "M 10 0 L 0 5 L 10 10 z" } },
           }),
       })
     );
-
-    const fetchData = async () => {
-      const { data } = await axios.get(`/paper/${params.id}`);
-      if (data.jsondata) {
-        setJsonData(JSON.parse(data.jsondata));
-      }
-      setSavedPaper(data);
-    };
-    fetchData();
   }, []);
 
   useEffect(() => {
     if (paper && jsonData) {
-      console.log("data from database",jsonData);
+      console.log("data from database", jsonData);
       let result = [];
       let paperWidth = Math.round(paper.$el.width());
       let TotalShapes = jsonData.cells.filter((item) => {
-        if (item.type !== "link") {
+        if (item.type !== "link" && item.type !== "standard.Link") {
           return item;
         }
       });
@@ -75,20 +76,23 @@ const PaperScreen = () => {
       //---------------------------------------  LEVEL 1 ---------------------------------------->>
       //shapeWidthLevel1: here we are calculating level one shape width
       let shapeWidthLevel1 =
-        Math.round(paperWidth / level1.length) - (5 * level1.length + 2);
+        Math.round(paperWidth / level1.length) - 10 * level1.length;
       //spaceLevel1: here we are calculating level one space length
       let spaceLevel1 = paper.$el.width() - shapeWidthLevel1 * level1.length;
-      spaceLevel1 = spaceLevel1 / level1.length + 2;
+      // +1 for last space
+      spaceLevel1 = Math.round(spaceLevel1 / (level1.length + 1));
+
       let posXLevel1 = spaceLevel1;
       let posYLevel1 = 10;
       // targetPortsArray is used to store port x value and y value
       let targetPortsArray = [];
       let xValue = spaceLevel1 + shapeWidthLevel1 / 2;
+      // console.log(xValue);
       // This loop is used for creating  n number of rectangle shapes
       for (let i = 0; i < level1.length; i++) {
         targetPortsArray.push({ x: xValue, y: 130 });
         //Creating rectangle shapes
-        const rectangleShape = new shapes.basic.Rect({
+        const rectangleShape = new shapes.basic.Circle({
           position: {
             x: posXLevel1,
             y: posYLevel1,
@@ -119,7 +123,7 @@ const PaperScreen = () => {
           attrs: {
             portBody: {
               magnet: true,
-              width: 1,
+              width: 2,
               height: 6,
               x: shapeWidthLevel1 / 2,
               y: 45,
@@ -145,7 +149,7 @@ const PaperScreen = () => {
         shapeWidthLevel1 / 2 -
         spaceLevel1 -
         (spaceLevel1 + shapeWidthLevel1 / 2);
-        //shadowlink we created for the horizondal line
+      //shadowlink we created for the horizondal line
       var shadowLink = new shapes.standard.Link();
       shadowLink.prop("source", {
         x: spaceLevel1 + shapeWidthLevel1 / 2,
@@ -189,81 +193,81 @@ const PaperScreen = () => {
         }
       }
 
-    if(level2.length>0){
-      const ConnectionRectangle1 = new shapes.basic.Rect({
-        position: {
-          x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-          y: 130,
-        },
-        size: {
-          width: 60,
-          height: 20,
-        },
-        attrs: {
-          text: {
-            text: `connect `,
+      if (level2.length > 0) {
+        const ConnectionRectangle1 = new shapes.basic.Rect({
+          position: {
+            x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
+            y: 130,
           },
-        },
-      });
-      const ConnectionRectangle2 = new shapes.basic.Rect({
-        position: {
-          x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-          y: 180,
-        },
-        size: {
-          width: 60,
-          height: 20,
-        },
-        attrs: {
-          text: {
-            text: `connect `,
+          size: {
+            width: 60,
+            height: 20,
           },
-        },
-      });
-      graph.addCell([ConnectionRectangle1,ConnectionRectangle2]);
-      var link = new dia.Link();
+          attrs: {
+            text: {
+              text: `connect `,
+            },
+          },
+        });
+        const ConnectionRectangle2 = new shapes.basic.Rect({
+          position: {
+            x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
+            y: 180,
+          },
+          size: {
+            width: 60,
+            height: 20,
+          },
+          attrs: {
+            text: {
+              text: `connect `,
+            },
+          },
+        });
+        graph.addCell([ConnectionRectangle1, ConnectionRectangle2]);
+        var link = new dia.Link();
         link.source(ConnectionRectangle1);
         link.target(ConnectionRectangle2);
         link.addTo(graph);
-      var subgroupPort1 = {
-        label: {
-          position: {
-            name: "right",
+        var subgroupPort1 = {
+          label: {
+            position: {
+              name: "right",
+            },
+            markup: [
+              {
+                tagName: "text",
+                selector: "label",
+              },
+            ],
+          },
+          attrs: {
+            portBody: {
+              magnet: true,
+              width: 0,
+              height: 6,
+              x: 30,
+              y: 15,
+              fill: "black",
+            },
           },
           markup: [
             {
-              tagName: "text",
-              selector: "label",
+              tagName: "rect",
+              selector: "portBody",
             },
           ],
-        },
-        attrs: {
-          portBody: {
-            magnet: true,
-            width: 0,
-            height: 6,
-            x: 30,
-            y: 15,
-            fill: "black",
-          },
-        },
-        markup: [
-          {
-            tagName: "rect",
-            selector: "portBody",
-          },
-        ],
-      };
-      ConnectionRectangle1.addPort(subgroupPort1);
-    }
-   
+        };
+        ConnectionRectangle1.addPort(subgroupPort1);
+      }
+
       ////---------------------------------------LEVEL 1  closed ----------------------------------------
       ////---------------------------------------LEVEL 2  start ----------------------------------------
 
       let shapeWidthLevel2 =
-        Math.round(paperWidth / level2.length) - (5 * level2.length + 2);
+        Math.round(paperWidth / level2.length) - 10 * level2.length;
       let spaceLevel2 = paper.$el.width() - shapeWidthLevel2 * level2.length;
-      spaceLevel2 = spaceLevel2 / level2.length + 2;
+      spaceLevel2 = Math.round(spaceLevel2 / (level2.length + 1));
       let posXLevel2 = spaceLevel2;
       let posYLevel2 = 250;
       targetPortsArray.length = 0;
@@ -301,11 +305,11 @@ const PaperScreen = () => {
           attrs: {
             portBody: {
               magnet: true,
-              width: 1,
+              width: 2,
               height: 6,
               x: shapeWidthLevel2 / 2,
               y: 23,
-              fill: "green",
+              fill: "black",
             },
           },
           markup: [
@@ -330,7 +334,7 @@ const PaperScreen = () => {
           attrs: {
             portBody: {
               magnet: true,
-              width: 1,
+              width: 2,
               height: 6,
               x: shapeWidthLevel2 / 2,
               y: -28,
@@ -462,52 +466,50 @@ const PaperScreen = () => {
         }
       }
 
-
-
-if(level3.length>0){
+      if (level3.length > 0) {
         const ConnectionRectangle3 = new shapes.basic.Rect({
-        position: {
-          x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-          y: 400,
-        },
-        size: {
-          width: 60,
-          height: 20,
-        },
-        attrs: {
-          text: {
-            text: `connect `,
+          position: {
+            x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
+            y: 400,
           },
-        },
-      });
-      const ConnectionRectangle4 = new shapes.basic.Rect({
-        position: {
-          x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-          y: 480,
-        },
-        size: {
-          width: 60,
-          height: 20,
-        },
-        attrs: {
-          text: {
-            text: `connect `,
+          size: {
+            width: 60,
+            height: 20,
           },
-        },
-      });
-      graph.addCell([ConnectionRectangle3,ConnectionRectangle4]);
-      var link = new dia.Link();
+          attrs: {
+            text: {
+              text: `connect `,
+            },
+          },
+        });
+        const ConnectionRectangle4 = new shapes.basic.Rect({
+          position: {
+            x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
+            y: 480,
+          },
+          size: {
+            width: 60,
+            height: 20,
+          },
+          attrs: {
+            text: {
+              text: `connect `,
+            },
+          },
+        });
+        graph.addCell([ConnectionRectangle3, ConnectionRectangle4]);
+        var link = new dia.Link();
         link.source(ConnectionRectangle3);
         link.target(ConnectionRectangle4);
         link.addTo(graph);
-}
+      }
       ////---------------------------------------LEVEL 2  closed ----------------------------------------
 
       ////---------------------------------------LEVEL 3 Started   ----------------------------------------
       let shapeWidthLevel3 =
-        Math.round(paperWidth / level3.length) - (5 * level3.length + 2);
+        Math.round(paperWidth / level3.length) - 10 * level3.length;
       let spaceLevel3 = paper.$el.width() - shapeWidthLevel3 * level3.length;
-      spaceLevel3 = spaceLevel3 / level3.length + 2;
+      spaceLevel3 = spaceLevel3 / (level3.length + 1);
       let posXLevel3 = spaceLevel3;
       let posYLevel3 = 600;
       targetPortsArray.length = 0;
@@ -515,7 +517,7 @@ if(level3.length>0){
       result = [];
       for (let i = 0; i < level3.length; i++) {
         targetPortsArray.push({ x: xValue, y: 800 });
-        const rectangleShape = new shapes.basic.Rect({
+        const rectangleShape = new shapes.basic.Rhombus({
           position: {
             x: posXLevel3,
             y: posYLevel3,

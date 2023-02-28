@@ -151,7 +151,7 @@ function App() {
           image: savedpaper.image,
           // image: 'https://healthcoach-fitness.s3.amazonaws.com/image3-1656269937815.png',
           position: { x: 0, y: 0 },
-          size: { width: 900, height: 600 },
+          size: { width: "100%" },
         },
         defaultLink: () =>
           new dia.Link({
