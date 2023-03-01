@@ -84,14 +84,14 @@ const PaperScreen = () => {
       spaceLevel1 = Math.round(spaceLevel1 / (level1.length + 1));
 
       let posXLevel1 = spaceLevel1;
-      let posYLevel1 = 20;
+      let posYLevel1 = 40;
       // targetPortsArray is used to store port x value and y value
       let targetPortsArray = [];
       let xValue = spaceLevel1 + shapeWidthLevel1 / 2;
       // console.log(xValue);
       // This loop is used for creating  n number of rectangle shapes
       for (let i = 0; i < level1.length; i++) {
-        targetPortsArray.push({ x: xValue, y: 130 });
+        targetPortsArray.push({ x: xValue, y: 170 });
         //Creating rectangle shapes
         const rectangleShape = new shapes.basic.Circle({
           position: {
@@ -99,7 +99,7 @@ const PaperScreen = () => {
             y: posYLevel1,
           },
           size: {
-            width: 120,
+            width: 130,
             height: 90,
           },
           attrs: {
@@ -154,11 +154,11 @@ const PaperScreen = () => {
       var shadowLink = new shapes.standard.Link();
       shadowLink.prop("source", {
         x: spaceLevel1 + shapeWidthLevel1 / 2,
-        y: 130,
+        y: 170,
       });
       shadowLink.prop("target", {
         x: posXLevel1 - shapeWidthLevel1 / 2 - spaceLevel1,
-        y: 130,
+        y: 170,
       });
       shadowLink.attr("line", { targetMarker: { type: "none" } });
       shadowLink.label(0, {
@@ -199,7 +199,7 @@ const PaperScreen = () => {
         const ConnectionRectangle1 = new shapes.basic.Rect({
           position: {
             x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-            y: 130,
+            y: 170,
           },
           size: {
             width: 60,
@@ -214,7 +214,7 @@ const PaperScreen = () => {
         const ConnectionRectangle2 = new shapes.basic.Rect({
           position: {
             x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-            y: 180,
+            y: 220,
           },
           size: {
             width: 60,
@@ -271,12 +271,12 @@ const PaperScreen = () => {
       let spaceLevel2 = paper.$el.width() - shapeWidthLevel2 * level2.length;
       spaceLevel2 = Math.round(spaceLevel2 / (level2.length + 1));
       let posXLevel2 = spaceLevel2;
-      let posYLevel2 = 250;
+      let posYLevel2 = 300;
       targetPortsArray.length = 0;
       xValue = spaceLevel2 + shapeWidthLevel2 / 2;
       result = [];
       for (let i = 0; i < level2.length; i++) {
-        targetPortsArray.push({ x: xValue, y: 400 });
+        targetPortsArray.push({ x: xValue, y: 450 });
         const rectangleShape = new shapes.basic.Rect({
           position: {
             x: posXLevel2,
@@ -367,11 +367,11 @@ const PaperScreen = () => {
       var shadowLink = new shapes.standard.Link();
       shadowLink.prop("source", {
         x: spaceLevel2 + shapeWidthLevel2 / 2,
-        y: 400,
+        y: 450,
       });
       shadowLink.prop("target", {
         x: posXLevel2 - shapeWidthLevel2 / 2 - spaceLevel2,
-        y: 400,
+        y: 450,
       });
       shadowLink.attr("line", { targetMarker: { type: "none" } });
       shadowLink.label(0, {
@@ -412,11 +412,11 @@ const PaperScreen = () => {
       var shadowLink = new shapes.standard.Link();
       shadowLink.prop("source", {
         x: spaceLevel2 + shapeWidthLevel2 / 2,
-        y: 200,
+        y: 240,
       });
       shadowLink.prop("target", {
         x: posXLevel2 - shapeWidthLevel2 / 2 - spaceLevel2,
-        y: 200,
+        y: 240,
       });
       shadowLink.attr("line", { targetMarker: { type: "none" } });
       shadowLink.label(0, {
@@ -438,7 +438,7 @@ const PaperScreen = () => {
       cells = drawData.cells.filter((item) => {
         let pos = item.position;
         if (item.type !== "standard.Link" && !item.type.includes("link")) {
-          if (pos["y"] === 250) {
+          if (pos["y"] === 300) {
             return item;
           }
         }
@@ -462,7 +462,7 @@ const PaperScreen = () => {
             magnet: "portBody",
             port: cells[i].ports.items[0].id,
           });
-          shadowLink.prop("target", { x: targetPortsArray[i].x, y: 200 });
+          shadowLink.prop("target", { x: targetPortsArray[i].x, y: 240 });
           shadowLink.addTo(graph);
           shadowLink1.addTo(graph);
         }
@@ -472,7 +472,7 @@ const PaperScreen = () => {
         const ConnectionRectangle3 = new shapes.basic.Rect({
           position: {
             x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-            y: 400,
+            y: 450,
           },
           size: {
             width: 60,
@@ -487,7 +487,7 @@ const PaperScreen = () => {
         const ConnectionRectangle4 = new shapes.basic.Rect({
           position: {
             x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-            y: 480,
+            y: 500,
           },
           size: {
             width: 60,
@@ -513,12 +513,12 @@ const PaperScreen = () => {
       let spaceLevel3 = paper.$el.width() - shapeWidthLevel3 * level3.length;
       spaceLevel3 = spaceLevel3 / (level3.length + 1);
       let posXLevel3 = spaceLevel3;
-      let posYLevel3 = 600;
+      let posYLevel3 = 580;
       targetPortsArray.length = 0;
       xValue = spaceLevel3 + shapeWidthLevel3 / 2;
       result = [];
       for (let i = 0; i < level3.length; i++) {
-        targetPortsArray.push({ x: xValue, y: 800 });
+        targetPortsArray.push({ x: xValue, y: 730 });
         const rectangleShape = new shapes.basic.Rhombus({
           position: {
             x: posXLevel3,
@@ -603,11 +603,11 @@ const PaperScreen = () => {
       var shadowLink = new shapes.standard.Link();
       shadowLink.prop("source", {
         x: spaceLevel3 + shapeWidthLevel3 / 2,
-        y: 800,
+        y: 730,
       });
       shadowLink.prop("target", {
         x: posXLevel3 - shapeWidthLevel3 / 2 - spaceLevel3,
-        y: 800,
+        y: 730,
       });
       shadowLink.attr("line", { targetMarker: { type: "none" } });
       shadowLink.label(0, {
@@ -629,7 +629,7 @@ const PaperScreen = () => {
       cells = drawData.cells.filter((item) => {
         let pos = item.position;
         if (item.type !== "standard.Link" && !item.type.includes("link")) {
-          if (pos["y"] === 600) {
+          if (pos["y"] === 580) {
             return item;
           }
         }
@@ -637,11 +637,11 @@ const PaperScreen = () => {
       var shadowLink = new shapes.standard.Link();
       shadowLink.prop("source", {
         x: spaceLevel3 + shapeWidthLevel3 / 2,
-        y: 500,
+        y: 520,
       });
       shadowLink.prop("target", {
         x: posXLevel3 - shapeWidthLevel3 / 2 - spaceLevel3,
-        y: 500,
+        y: 520,
       });
       shadowLink.attr("line", { targetMarker: { type: "none" } });
       shadowLink.label(0, {
@@ -677,7 +677,7 @@ const PaperScreen = () => {
             magnet: "portBody",
             port: cells[i].ports.items[1].id,
           });
-          shadowLink.prop("target", { x: targetPortsArray[i].x, y: 500 });
+          shadowLink.prop("target", { x: targetPortsArray[i].x, y: 520 });
           shadowLink.addTo(graph);
           shadowLink1.addTo(graph);
         }
