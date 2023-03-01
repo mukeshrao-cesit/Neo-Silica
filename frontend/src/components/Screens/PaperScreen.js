@@ -24,6 +24,7 @@ const PaperScreen = () => {
 
   useEffect(() => {
     fetchData();
+    console.log(savedpaper);
     setPaper(
       new dia.Paper({
         el: $("#paper"),
@@ -48,6 +49,8 @@ const PaperScreen = () => {
   }, []);
 
   useEffect(() => {
+    const ac = new AbortController();
+
     if (paper && jsonData) {
       console.log("data from database", jsonData);
       let result = [];
@@ -123,8 +126,8 @@ const PaperScreen = () => {
           attrs: {
             portBody: {
               magnet: true,
-              width: 2,
-              height: 6,
+              width: 5,
+              height: 10,
               x: shapeWidthLevel1 / 2,
               y: 45,
               fill: "black",
@@ -177,6 +180,7 @@ const PaperScreen = () => {
       shadowLink.addTo(graph);
       let drawData = graph.toJSON();
       let cells = drawData.cells;
+      console.log("cells", cells);
       for (let i = 0; i < cells.length; i++) {
         if (
           cells[i].type !== "standard.Link" &&
@@ -201,11 +205,11 @@ const PaperScreen = () => {
           },
           size: {
             width: 60,
-            height: 20,
+            height: 35,
           },
           attrs: {
             text: {
-              text: `connect `,
+              text: `connect\nTR100 `,
             },
           },
         });
@@ -682,6 +686,7 @@ const PaperScreen = () => {
       }
       //------------------------------------------------------------------------------------------------------
     }
+    return () => ac.abort();
   }, [paper, jsonData]);
 
   useEffect(() => {
