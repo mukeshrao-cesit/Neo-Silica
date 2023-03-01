@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./PaperScreen.css";
 import { dia, elementTools, format, shapes, ui, util } from "@clientio/rappid";
-import axios from "../../util/axiosConfig.js";
+import axios from "../../../util/axiosConfig";
 import { useParams } from "react-router-dom";
 
 const PaperScreen = () => {
@@ -14,17 +14,17 @@ const PaperScreen = () => {
   const [jsonData, setJsonData] = useState();
   const [savedpaper, setSavedPaper] = useState({});
 
-  const fetchData = async () => {
+  async function fetchData() {
     const { data } = await axios.get(`/paper/${params.id}`);
     if (data.jsondata) {
       setSavedPaper(data);
       setJsonData(JSON.parse(data.jsondata));
     }
-  };
-
+  }
   useEffect(() => {
     fetchData();
-    console.log(savedpaper);
+  }, []);
+  useEffect(() => {
     setPaper(
       new dia.Paper({
         el: $("#paper"),
@@ -34,9 +34,7 @@ const PaperScreen = () => {
         cellViewNamespace: shapes,
         background: {
           color: "white",
-          image: savedpaper.image,
-          // image:
-          // "https://healthcoach-fitness.s3.amazonaws.com/image3-1656269937815.png",
+          // image: savedpaper.image,
           position: { x: 0, y: 0 },
           size: { width: "100%" },
         },
@@ -46,7 +44,7 @@ const PaperScreen = () => {
           }),
       })
     );
-  }, []);
+  }, [savedpaper]);
 
   useEffect(() => {
     const ac = new AbortController();
@@ -78,15 +76,15 @@ const PaperScreen = () => {
       });
       //---------------------------------------  LEVEL 1 ---------------------------------------->>
       //shapeWidthLevel1: here we are calculating level one shape width
-      let shapeWidthLevel1 =
-        Math.round(paperWidth / level1.length) - 10 * level1.length;
+      let shapeWidthLevel1 = 120;
+      // Math.round(paperWidth / level1.length) - 10 * level1.length;
       //spaceLevel1: here we are calculating level one space length
       let spaceLevel1 = paper.$el.width() - shapeWidthLevel1 * level1.length;
       // +1 for last space
       spaceLevel1 = Math.round(spaceLevel1 / (level1.length + 1));
 
       let posXLevel1 = spaceLevel1;
-      let posYLevel1 = 10;
+      let posYLevel1 = 20;
       // targetPortsArray is used to store port x value and y value
       let targetPortsArray = [];
       let xValue = spaceLevel1 + shapeWidthLevel1 / 2;
@@ -101,7 +99,7 @@ const PaperScreen = () => {
             y: posYLevel1,
           },
           size: {
-            width: shapeWidthLevel1,
+            width: 120,
             height: 90,
           },
           attrs: {
@@ -128,7 +126,7 @@ const PaperScreen = () => {
               magnet: true,
               width: 5,
               height: 10,
-              x: shapeWidthLevel1 / 2,
+              x: shapeWidthLevel1 / 2 - 2,
               y: 45,
               fill: "black",
             },
@@ -205,11 +203,11 @@ const PaperScreen = () => {
           },
           size: {
             width: 60,
-            height: 35,
+            height: 20,
           },
           attrs: {
             text: {
-              text: `connect\nTR100 `,
+              text: `connect `,
             },
           },
         });
@@ -268,8 +266,8 @@ const PaperScreen = () => {
       ////---------------------------------------LEVEL 1  closed ----------------------------------------
       ////---------------------------------------LEVEL 2  start ----------------------------------------
 
-      let shapeWidthLevel2 =
-        Math.round(paperWidth / level2.length) - 10 * level2.length;
+      let shapeWidthLevel2 = 135;
+      // Math.round(paperWidth / level2.length) - 10 * level2.length;
       let spaceLevel2 = paper.$el.width() - shapeWidthLevel2 * level2.length;
       spaceLevel2 = Math.round(spaceLevel2 / (level2.length + 1));
       let posXLevel2 = spaceLevel2;
@@ -285,7 +283,7 @@ const PaperScreen = () => {
             y: posYLevel2,
           },
           size: {
-            width: shapeWidthLevel2,
+            width: 135,
             height: 90,
           },
           attrs: {
@@ -309,10 +307,10 @@ const PaperScreen = () => {
           attrs: {
             portBody: {
               magnet: true,
-              width: 2,
-              height: 6,
-              x: shapeWidthLevel2 / 2,
-              y: 23,
+              width: 5,
+              height: 10,
+              x: shapeWidthLevel2 / 2 - 2,
+              y: 22,
               fill: "black",
             },
           },
@@ -338,10 +336,10 @@ const PaperScreen = () => {
           attrs: {
             portBody: {
               magnet: true,
-              width: 2,
-              height: 6,
-              x: shapeWidthLevel2 / 2,
-              y: -28,
+              width: 5,
+              height: 10,
+              x: shapeWidthLevel2 / 2 - 2,
+              y: -33,
               fill: "black",
             },
           },
@@ -510,8 +508,8 @@ const PaperScreen = () => {
       ////---------------------------------------LEVEL 2  closed ----------------------------------------
 
       ////---------------------------------------LEVEL 3 Started   ----------------------------------------
-      let shapeWidthLevel3 =
-        Math.round(paperWidth / level3.length) - 10 * level3.length;
+      let shapeWidthLevel3 = 120;
+      // Math.round(paperWidth / level3.length) - 10 * level3.length;
       let spaceLevel3 = paper.$el.width() - shapeWidthLevel3 * level3.length;
       spaceLevel3 = spaceLevel3 / (level3.length + 1);
       let posXLevel3 = spaceLevel3;
@@ -527,7 +525,7 @@ const PaperScreen = () => {
             y: posYLevel3,
           },
           size: {
-            width: shapeWidthLevel3,
+            width: 120,
             height: 90,
           },
           attrs: {
@@ -551,10 +549,10 @@ const PaperScreen = () => {
           attrs: {
             portBody: {
               magnet: true,
-              width: 1,
-              height: 6,
-              x: shapeWidthLevel3 / 2,
-              y: 68,
+              width: 5,
+              height: 10,
+              x: shapeWidthLevel3 / 2 - 2,
+              y: 65,
               fill: "black",
             },
           },
@@ -580,10 +578,10 @@ const PaperScreen = () => {
           attrs: {
             portBody: {
               magnet: true,
-              width: 1,
-              height: 6,
-              x: shapeWidthLevel3 / 2,
-              y: -73,
+              width: 5,
+              height: 10,
+              x: shapeWidthLevel3 / 2 - 3,
+              y: -77,
               fill: "black",
             },
           },

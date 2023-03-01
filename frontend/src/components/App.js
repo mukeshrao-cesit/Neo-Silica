@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Draw from "./Draw/Draw";
 import LoginScreen from "./Screens/LoginScreen.js";
 import LandingScreen from "./Screens/LandingScreen.js";
-import PaperScreen from "./Screens/PaperScreen.js";
+import PaperScreen from "./Screens/PaperScreen/PaperScreen";
 function App() {
   return (
     <BrowserRouter>
