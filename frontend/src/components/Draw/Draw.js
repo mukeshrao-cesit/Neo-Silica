@@ -678,6 +678,7 @@ function App() {
           };
 
         flyShape.position(0, 0);
+        console.log(flyShape);
         flyGraph.addCell(flyShape);
         $("#flyPaper").offset({
           left: e.pageX - offset.x,
@@ -723,7 +724,7 @@ function App() {
             //     attrs: { label: { text: "out" } },
             //   },
             // ]);
-            graph.addCell(s);
+            graph.addCell(s[0]);
           }
 
           let jsonObject = graph.toJSON();
