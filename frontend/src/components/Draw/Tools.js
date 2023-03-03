@@ -11,6 +11,7 @@ const Tools = ({
   zoomOut,
   zoomIn,
   id,
+  graph
 }) => {
   return (
     <div className="tools">
