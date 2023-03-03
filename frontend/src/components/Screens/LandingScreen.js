@@ -39,7 +39,6 @@ import {
 } from "../Draw/Shapes.js";
 import "./LandingScreen.css";
 
-
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -350,9 +349,9 @@ const LandingScreen = () => {
                             label="Age"
                             onChange={handleChange}
                           >
-                            <MenuItem value={1}>Level 1</MenuItem>
-                            <MenuItem value={2}>Level 2</MenuItem>
-                            <MenuItem value={3}>Level 3</MenuItem>
+                            <MenuItem value={1}>Q1</MenuItem>
+                            <MenuItem value={2}>Q2</MenuItem>
+                            <MenuItem value={3}>Q3</MenuItem>
                           </Select>
                         </FormControl>
                         <div></div>
@@ -446,10 +445,13 @@ const LandingScreen = () => {
                     />
                     <CardContent></CardContent>
                     <CardActions disableSpacing>
-                      <IconButton aria-label="add to favorites" onClick={() => {
-                            deletePaperHandler(item._id);
-                          }}>
-                        <DeleteIcon/>
+                      <IconButton
+                        aria-label="add to favorites"
+                        onClick={() => {
+                          deletePaperHandler(item._id);
+                        }}
+                      >
+                        <DeleteIcon />
                       </IconButton>
                       <IconButton aria-label="share">
                         <Link to={`/paper/${item._id}`}>

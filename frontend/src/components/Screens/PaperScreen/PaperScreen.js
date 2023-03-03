@@ -10,6 +10,7 @@ const PaperScreen = () => {
   const [graph, setGraph] = useState(
     new dia.Graph({}, { cellNamespace: shapes })
   );
+  const [paperScreenWidth, setPaperScreenWidth] = useState(1680);
   const params = useParams();
   const [jsonData, setJsonData] = useState();
   const [savedpaper, setSavedPaper] = useState({});
@@ -21,6 +22,15 @@ const PaperScreen = () => {
       setJsonData(JSON.parse(data.jsondata));
     }
   }
+  function handleWidth(level1) {
+    let spaceLevel1 = (level1.length + 3) * 10;
+    let width = level1.length * 130;
+    if (paperScreenWidth < width + spaceLevel1) {
+      setPaperScreenWidth(width + spaceLevel1);
+      paper.setDimensions(width + spaceLevel1, 1000);
+      return width + spaceLevel1;
+    }
+  }
   useEffect(() => {
     fetchData();
   }, []);
@@ -28,7 +38,7 @@ const PaperScreen = () => {
     setPaper(
       new dia.Paper({
         el: $("#paper"),
-        width: "100%",
+        width: 1690,
         height: "100%",
         model: graph,
         cellViewNamespace: shapes,
@@ -47,12 +57,11 @@ const PaperScreen = () => {
   }, [savedpaper]);
 
   useEffect(() => {
-    const ac = new AbortController();
+    // const ac = new AbortController();
 
     if (paper && jsonData) {
       console.log("data from database", jsonData);
       let result = [];
-      let paperWidth = Math.round(paper.$el.width());
       let TotalShapes = jsonData.cells.filter((item) => {
         if (item.type !== "link" && item.type !== "standard.Link") {
           return item;
@@ -74,15 +83,22 @@ const PaperScreen = () => {
           level3.push(item);
         }
       });
+      let papersWidth = 1680;
       //---------------------------------------  LEVEL 1 ---------------------------------------->>
       //shapeWidthLevel1: here we are calculating level one shape width
-      let shapeWidthLevel1 = 120;
+      let shapeWidthLevel1 = 130;
       // Math.round(paperWidth / level1.length) - 10 * level1.length;
       //spaceLevel1: here we are calculating level one space length
-      let spaceLevel1 = paper.$el.width() - shapeWidthLevel1 * level1.length;
+      let spaceLevel1_1 = paper.$el.width() - shapeWidthLevel1 * level1.length;
       // +1 for last space
+      spaceLevel1_1 = Math.round(spaceLevel1_1 / (level1.length + 1));
+      if (spaceLevel1_1 < 5) {
+        papersWidth = handleWidth(level1);
+      }
+      console.log(papersWidth, level1.length);
+      let spaceLevel1 = papersWidth - shapeWidthLevel1 * level1.length;
       spaceLevel1 = Math.round(spaceLevel1 / (level1.length + 1));
-
+      console.log(papersWidth, spaceLevel1);
       let posXLevel1 = spaceLevel1;
       let posYLevel1 = 40;
       // targetPortsArray is used to store port x value and y value
@@ -268,7 +284,7 @@ const PaperScreen = () => {
 
       let shapeWidthLevel2 = 135;
       // Math.round(paperWidth / level2.length) - 10 * level2.length;
-      let spaceLevel2 = paper.$el.width() - shapeWidthLevel2 * level2.length;
+      let spaceLevel2 = papersWidth - shapeWidthLevel2 * level2.length;
       spaceLevel2 = Math.round(spaceLevel2 / (level2.length + 1));
       let posXLevel2 = spaceLevel2;
       let posYLevel2 = 300;
@@ -510,7 +526,7 @@ const PaperScreen = () => {
       ////---------------------------------------LEVEL 3 Started   ----------------------------------------
       let shapeWidthLevel3 = 120;
       // Math.round(paperWidth / level3.length) - 10 * level3.length;
-      let spaceLevel3 = paper.$el.width() - shapeWidthLevel3 * level3.length;
+      let spaceLevel3 = papersWidth - shapeWidthLevel3 * level3.length;
       spaceLevel3 = spaceLevel3 / (level3.length + 1);
       let posXLevel3 = spaceLevel3;
       let posYLevel3 = 580;
@@ -684,7 +700,7 @@ const PaperScreen = () => {
       }
       //------------------------------------------------------------------------------------------------------
     }
-    return () => ac.abort();
+    // return () => ac.abort();
   }, [paper, jsonData]);
 
   useEffect(() => {
@@ -696,14 +712,8 @@ const PaperScreen = () => {
     }
   }, [paper]);
   return (
-    <div className="papermainDiv">
-      <div className="paperleftDiv">
-        <div className="paperhead">Neo Silica</div>
-      </div>
-      <div className="papermidtDiv">
-        {/* <div className="PaperTool">Toolbar</div> */}
-        <div id="paper"></div>
-      </div>
+    <div className="papermainDiv" style={{ width: paperScreenWidth + "px" }}>
+      <div id="paper"></div>
     </div>
   );
 };
