@@ -724,7 +724,7 @@ function App() {
             //     attrs: { label: { text: "out" } },
             //   },
             // ]);
-            graph.addCell(s[0]);
+            graph.addCell(s);
           }
 
           let jsonObject = graph.toJSON();
