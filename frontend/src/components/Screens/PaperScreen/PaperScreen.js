@@ -3,6 +3,9 @@ import "./PaperScreen.css";
 import { dia, elementTools, format, shapes, ui, util } from "@clientio/rappid";
 import axios from "../../../util/axiosConfig";
 import { useParams } from "react-router-dom";
+import { q1Shape, verticalLine1 } from "./1.Shape.js";
+import { totalBox } from "./TotalBox";
+import { q2Shape, verticalLine2 } from "./2.Shape";
 
 const PaperScreen = () => {
   //STATES FOR PAPER
@@ -22,13 +25,13 @@ const PaperScreen = () => {
       setJsonData(JSON.parse(data.jsondata));
     }
   }
-  function handleWidth(level1) {
-    let spaceLevel1 = (level1.length + 3) * 10;
-    let width = level1.length * 130;
-    if (paperScreenWidth < width + spaceLevel1) {
-      setPaperScreenWidth(width + spaceLevel1);
-      paper.setDimensions(width + spaceLevel1, 1000);
-      return width + spaceLevel1;
+  function handleWidth(level) {
+    let spaceLevel = (level.length + 3) * 10;
+    let width = level.length * 130;
+    if (paperScreenWidth < width + spaceLevel) {
+      setPaperScreenWidth(width + spaceLevel + 10);
+      paper.setDimensions(width + spaceLevel + 10, 1000);
+      return width + spaceLevel + 10;
     }
   }
   useEffect(() => {
@@ -67,7 +70,8 @@ const PaperScreen = () => {
           return item;
         }
       });
-
+      let horizontalLine;
+      let horizondalStarts = 0;
       //TotalShapes is the data without links
       let level1 = [];
       let level2 = [];
@@ -84,454 +88,129 @@ const PaperScreen = () => {
         }
       });
       let papersWidth = 1680;
-      //---------------------------------------  LEVEL 1 ---------------------------------------->>
-      //shapeWidthLevel1: here we are calculating level one shape width
-      let shapeWidthLevel1 = 130;
-      // Math.round(paperWidth / level1.length) - 10 * level1.length;
-      //spaceLevel1: here we are calculating level one space length
-      let spaceLevel1_1 = paper.$el.width() - shapeWidthLevel1 * level1.length;
-      // +1 for last space
+      let shapeWidth = 130;
+
+      let spaceLevel1_1 = paper.$el.width() - shapeWidth * level1.length;
       spaceLevel1_1 = Math.round(spaceLevel1_1 / (level1.length + 1));
-      if (spaceLevel1_1 < 5) {
+      // level2
+      let spaceLevel2_2 = paper.$el.width() - shapeWidth * level2.length;
+      spaceLevel2_2 = Math.round(spaceLevel2_2 / (level2.length + 1));
+      // level3
+      let spaceLevel3_3 = paper.$el.width() - shapeWidth * level3.length;
+      spaceLevel3_3 = Math.round(spaceLevel3_3 / (level3.length + 1));
+
+      if (spaceLevel1_1 < 10) {
         papersWidth = handleWidth(level1);
+      } else if (spaceLevel2_2 < 10) {
+        papersWidth = handleWidth(level2);
+      } else if (spaceLevel3_3 < 10) {
+        papersWidth = handleWidth(level3);
       }
-      console.log(papersWidth, level1.length);
-      let spaceLevel1 = papersWidth - shapeWidthLevel1 * level1.length;
-      spaceLevel1 = Math.round(spaceLevel1 / (level1.length + 1));
-      console.log(papersWidth, spaceLevel1);
-      let posXLevel1 = spaceLevel1;
-      let posYLevel1 = 40;
-      // targetPortsArray is used to store port x value and y value
-      let targetPortsArray = [];
-      let xValue = spaceLevel1 + shapeWidthLevel1 / 2;
-      // console.log(xValue);
-      // This loop is used for creating  n number of rectangle shapes
-      for (let i = 0; i < level1.length; i++) {
-        targetPortsArray.push({ x: xValue, y: 170 });
-        //Creating rectangle shapes
-        const rectangleShape = new shapes.basic.Circle({
-          position: {
-            x: posXLevel1,
-            y: posYLevel1,
-          },
-          size: {
-            width: 130,
-            height: 90,
-          },
-          attrs: {
-            text: {
-              text: `Level 1 `,
-            },
-          },
-        });
-        //Creating ports
-        var Level1ShapePort = {
-          label: {
-            position: {
-              name: "right",
-            },
-            markup: [
-              {
-                tagName: "text",
-                selector: "label",
-              },
-            ],
-          },
-          attrs: {
-            portBody: {
-              magnet: true,
-              width: 5,
-              height: 10,
-              x: shapeWidthLevel1 / 2 - 2,
-              y: 45,
-              fill: "black",
-            },
-          },
-          markup: [
-            {
-              tagName: "rect",
-              selector: "portBody",
-            },
-          ],
-        };
-        rectangleShape.addPort(Level1ShapePort);
-        result.push(rectangleShape);
-        posXLevel1 = posXLevel1 + spaceLevel1 + shapeWidthLevel1;
-        xValue = xValue + shapeWidthLevel1 + spaceLevel1;
-      }
-      //adding the shapes to the graph
+      //---------------------------------------  LEVEL 1 ---------------------------------------->>
+      //shapeWidth: here we are calculating level one shape width
+      let horizondalStarts1 = 0;
+      let horizondalStarts2 = 0;
+      const resultQ1 = q1Shape(
+        shapes,
+        papersWidth,
+        shapeWidth,
+        level1,
+        graph,
+        result
+      );
+      horizontalLine = resultQ1.horizondalLink;
       graph.addCell(result);
-      let underlineLength =
-        posXLevel1 -
-        shapeWidthLevel1 / 2 -
-        spaceLevel1 -
-        (spaceLevel1 + shapeWidthLevel1 / 2);
-      //shadowlink we created for the horizondal line
-      var shadowLink = new shapes.standard.Link();
-      shadowLink.prop("source", {
-        x: spaceLevel1 + shapeWidthLevel1 / 2,
-        y: 170,
-      });
-      shadowLink.prop("target", {
-        x: posXLevel1 - shapeWidthLevel1 / 2 - spaceLevel1,
-        y: 170,
-      });
-      shadowLink.attr("line", { targetMarker: { type: "none" } });
-      shadowLink.label(0, {
-        markup: [
-          {
-            tagName: "rect",
-            selector: "body",
-          },
-          {
-            tagName: "text",
-            selector: "label",
-          },
-        ],
-      });
-      shadowLink.attr("line/stroke", "black");
-      //adding first horizondal line to the graph
-      shadowLink.addTo(graph);
       let drawData = graph.toJSON();
       let cells = drawData.cells;
-      console.log("cells", cells);
-      for (let i = 0; i < cells.length; i++) {
-        if (
-          cells[i].type !== "standard.Link" &&
-          !cells[i].type.includes("link")
-        ) {
-          var shadowLink = new dia.Link();
-          shadowLink.prop("source", {
-            id: cells[i].id,
-            magnet: "portBody",
-            port: cells[i].ports.items[0].id,
-          });
-          shadowLink.prop("target", targetPortsArray[i]);
-          shadowLink.addTo(graph);
-        }
-      }
+      verticalLine1(
+        horizondalStarts,
+        horizontalLine,
+        dia,
+        graph,
+        resultQ1.connectPoint
+      );
 
       if (level2.length > 0) {
-        const ConnectionRectangle1 = new shapes.basic.Rect({
-          position: {
-            x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-            y: 170,
-          },
-          size: {
-            width: 60,
-            height: 20,
-          },
-          attrs: {
-            text: {
-              text: `connect `,
-            },
-          },
-        });
-        const ConnectionRectangle2 = new shapes.basic.Rect({
-          position: {
-            x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-            y: 220,
-          },
-          size: {
-            width: 60,
-            height: 20,
-          },
-          attrs: {
-            text: {
-              text: `connect `,
-            },
-          },
-        });
-        graph.addCell([ConnectionRectangle1, ConnectionRectangle2]);
+        const totalBox1 = totalBox(
+          shapes,
+          resultQ1.space,
+          shapeWidth,
+          resultQ1.underlineLength,
+          170
+        );
+        const totalBox2 = totalBox(
+          shapes,
+          resultQ1.space,
+          shapeWidth,
+          resultQ1.underlineLength,
+          220
+        );
+        graph.addCell([totalBox1, totalBox2]);
         var link = new dia.Link();
-        link.source(ConnectionRectangle1);
-        link.target(ConnectionRectangle2);
+        link.source(totalBox1);
+        link.target(totalBox2);
         link.addTo(graph);
-        var subgroupPort1 = {
-          label: {
-            position: {
-              name: "right",
-            },
-            markup: [
-              {
-                tagName: "text",
-                selector: "label",
-              },
-            ],
-          },
-          attrs: {
-            portBody: {
-              magnet: true,
-              width: 0,
-              height: 6,
-              x: 30,
-              y: 15,
-              fill: "black",
-            },
-          },
-          markup: [
-            {
-              tagName: "rect",
-              selector: "portBody",
-            },
-          ],
-        };
-        ConnectionRectangle1.addPort(subgroupPort1);
       }
+      result = [];
 
       ////---------------------------------------LEVEL 1  closed ----------------------------------------
       ////---------------------------------------LEVEL 2  start ----------------------------------------
+      const resultQ2 = q2Shape(
+        shapes,
+        papersWidth,
+        shapeWidth,
+        level2,
+        result,
+        graph
+      );
+      let horizontalLine1 = resultQ2.horizondalLink1;
+      let horizontalLine2 = resultQ2.horizondalLink2;
 
-      let shapeWidthLevel2 = 135;
-      // Math.round(paperWidth / level2.length) - 10 * level2.length;
-      let spaceLevel2 = papersWidth - shapeWidthLevel2 * level2.length;
-      spaceLevel2 = Math.round(spaceLevel2 / (level2.length + 1));
-      let posXLevel2 = spaceLevel2;
-      let posYLevel2 = 300;
-      targetPortsArray.length = 0;
-      xValue = spaceLevel2 + shapeWidthLevel2 / 2;
-      result = [];
-      for (let i = 0; i < level2.length; i++) {
-        targetPortsArray.push({ x: xValue, y: 450 });
-        const rectangleShape = new shapes.basic.Rect({
-          position: {
-            x: posXLevel2,
-            y: posYLevel2,
-          },
-          size: {
-            width: 135,
-            height: 90,
-          },
-          attrs: {
-            text: {
-              text: `Level 2 `,
-            },
-          },
-        });
-        var subgroupPort1 = {
-          label: {
-            position: {
-              name: "right",
-            },
-            markup: [
-              {
-                tagName: "text",
-                selector: "label",
-              },
-            ],
-          },
-          attrs: {
-            portBody: {
-              magnet: true,
-              width: 5,
-              height: 10,
-              x: shapeWidthLevel2 / 2 - 2,
-              y: 22,
-              fill: "black",
-            },
-          },
-          markup: [
-            {
-              tagName: "rect",
-              selector: "portBody",
-            },
-          ],
-        };
-        var subgroupPort2 = {
-          label: {
-            position: {
-              name: "right",
-            },
-            markup: [
-              {
-                tagName: "text",
-                selector: "label",
-              },
-            ],
-          },
-          attrs: {
-            portBody: {
-              magnet: true,
-              width: 5,
-              height: 10,
-              x: shapeWidthLevel2 / 2 - 2,
-              y: -33,
-              fill: "black",
-            },
-          },
-          markup: [
-            {
-              tagName: "rect",
-              selector: "portBody",
-            },
-          ],
-        };
-        rectangleShape.addPort(subgroupPort2);
-        rectangleShape.addPort(subgroupPort1);
-
-        result.push(rectangleShape);
-        posXLevel2 = posXLevel2 + spaceLevel2 + shapeWidthLevel2;
-        xValue = xValue + shapeWidthLevel2 + spaceLevel2;
-      }
       graph.addCell(result);
-      let underlineLength2 =
-        posXLevel2 -
-        shapeWidthLevel2 / 2 -
-        spaceLevel2 -
-        (spaceLevel2 + shapeWidthLevel2 / 2);
-
-      var shadowLink = new shapes.standard.Link();
-      shadowLink.prop("source", {
-        x: spaceLevel2 + shapeWidthLevel2 / 2,
-        y: 450,
-      });
-      shadowLink.prop("target", {
-        x: posXLevel2 - shapeWidthLevel2 / 2 - spaceLevel2,
-        y: 450,
-      });
-      shadowLink.attr("line", { targetMarker: { type: "none" } });
-      shadowLink.label(0, {
-        markup: [
-          {
-            tagName: "rect",
-            selector: "body",
-          },
-          {
-            tagName: "text",
-            selector: "label",
-          },
-        ],
-        attrs: {
-          body: {
-            fill: "white", // white background
-          },
-          label: {
-            text: "my label", // text to show
-            fill: "black  ", // blue text
-          },
-        },
-        position: {
-          distance: 0, // midway on the connection path
-          offset: {
-            x: 0, // 10 local x units to the right
-            y: 650, // 5 local y units above
-          },
-
-          args: {
-            keepGradient: true, // auto-rotate by path slope at distance
-            ensureLegibility: true, // auto-rotate label if upside-down
-          },
-        },
-      });
-      shadowLink.attr("line/stroke", "black");
-      shadowLink.addTo(graph);
-      var shadowLink = new shapes.standard.Link();
-      shadowLink.prop("source", {
-        x: spaceLevel2 + shapeWidthLevel2 / 2,
-        y: 240,
-      });
-      shadowLink.prop("target", {
-        x: posXLevel2 - shapeWidthLevel2 / 2 - spaceLevel2,
-        y: 240,
-      });
-      shadowLink.attr("line", { targetMarker: { type: "none" } });
-      shadowLink.label(0, {
-        markup: [
-          {
-            tagName: "rect",
-            selector: "body",
-          },
-          {
-            tagName: "text",
-            selector: "label",
-          },
-        ],
-      });
-      shadowLink.attr("line/stroke", "black");
-      shadowLink.addTo(graph);
+      verticalLine2(
+        horizondalStarts1,
+        horizondalStarts2,
+        horizontalLine1,
+        horizontalLine2,
+        dia,
+        graph,
+        resultQ2.connectPoint
+      );
       drawData = graph.toJSON();
       cells = drawData.cells;
-      cells = drawData.cells.filter((item) => {
-        let pos = item.position;
-        if (item.type !== "standard.Link" && !item.type.includes("link")) {
-          if (pos["y"] === 300) {
-            return item;
-          }
-        }
-      });
-      for (let i = 0; i < cells.length; i++) {
-        if (
-          cells[i].type !== "standard.Link" &&
-          !cells[i].type.includes("link")
-        ) {
-          var shadowLink = new dia.Link();
-          var shadowLink1 = new dia.Link();
-          shadowLink1.prop("source", {
-            id: cells[i].id,
-            magnet: "portBody",
-            port: cells[i].ports.items[1].id,
-          });
-          shadowLink1.prop("target", targetPortsArray[i]);
-          // shadowLink.source(cells[i].ports.items[0].id)
-          shadowLink.prop("source", {
-            id: cells[i].id,
-            magnet: "portBody",
-            port: cells[i].ports.items[0].id,
-          });
-          shadowLink.prop("target", { x: targetPortsArray[i].x, y: 240 });
-          shadowLink.addTo(graph);
-          shadowLink1.addTo(graph);
-        }
-      }
 
       if (level3.length > 0) {
-        const ConnectionRectangle3 = new shapes.basic.Rect({
-          position: {
-            x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-            y: 450,
-          },
-          size: {
-            width: 60,
-            height: 20,
-          },
-          attrs: {
-            text: {
-              text: `connect `,
-            },
-          },
-        });
-        const ConnectionRectangle4 = new shapes.basic.Rect({
-          position: {
-            x: spaceLevel1 + shapeWidthLevel1 / 2 + (underlineLength / 2 - 30),
-            y: 500,
-          },
-          size: {
-            width: 60,
-            height: 20,
-          },
-          attrs: {
-            text: {
-              text: `connect `,
-            },
-          },
-        });
-        graph.addCell([ConnectionRectangle3, ConnectionRectangle4]);
+        const totalBox3 = totalBox(
+          shapes,
+          resultQ2.space,
+          shapeWidth,
+          resultQ2.underlineLength,
+          450
+        );
+        const totalBox4 = totalBox(
+          shapes,
+          resultQ2.space,
+          shapeWidth,
+          resultQ2.underlineLength,
+          500
+        );
+
+        graph.addCell([totalBox3, totalBox4]);
         var link = new dia.Link();
-        link.source(ConnectionRectangle3);
-        link.target(ConnectionRectangle4);
+        link.source(totalBox3);
+        link.target(totalBox4);
         link.addTo(graph);
       }
       ////---------------------------------------LEVEL 2  closed ----------------------------------------
 
       ////---------------------------------------LEVEL 3 Started   ----------------------------------------
-      let shapeWidthLevel3 = 120;
       // Math.round(paperWidth / level3.length) - 10 * level3.length;
-      let spaceLevel3 = papersWidth - shapeWidthLevel3 * level3.length;
+      let spaceLevel3 = papersWidth - shapeWidth * level3.length;
       spaceLevel3 = spaceLevel3 / (level3.length + 1);
       let posXLevel3 = spaceLevel3;
       let posYLevel3 = 580;
-      targetPortsArray.length = 0;
-      xValue = spaceLevel3 + shapeWidthLevel3 / 2;
+      let targetPortsArray = [];
+      let xValue = spaceLevel3 + shapeWidth / 2;
       result = [];
       for (let i = 0; i < level3.length; i++) {
         targetPortsArray.push({ x: xValue, y: 730 });
@@ -541,7 +220,7 @@ const PaperScreen = () => {
             y: posYLevel3,
           },
           size: {
-            width: 120,
+            width: 130,
             height: 90,
           },
           attrs: {
@@ -567,7 +246,7 @@ const PaperScreen = () => {
               magnet: true,
               width: 5,
               height: 10,
-              x: shapeWidthLevel3 / 2 - 2,
+              x: shapeWidth / 2 - 2,
               y: 65,
               fill: "black",
             },
@@ -596,7 +275,7 @@ const PaperScreen = () => {
               magnet: true,
               width: 5,
               height: 10,
-              x: shapeWidthLevel3 / 2 - 3,
+              x: shapeWidth / 2 - 3,
               y: -77,
               fill: "black",
             },
@@ -612,17 +291,17 @@ const PaperScreen = () => {
         rectangleShape.addPort(subgroupPort2);
 
         result.push(rectangleShape);
-        posXLevel3 = posXLevel3 + spaceLevel3 + shapeWidthLevel3;
-        xValue = xValue + shapeWidthLevel3 + spaceLevel3;
+        posXLevel3 = posXLevel3 + spaceLevel3 + shapeWidth;
+        xValue = xValue + shapeWidth + spaceLevel3;
       }
       graph.addCell(result);
       var shadowLink = new shapes.standard.Link();
       shadowLink.prop("source", {
-        x: spaceLevel3 + shapeWidthLevel3 / 2,
+        x: spaceLevel3 + shapeWidth / 2,
         y: 730,
       });
       shadowLink.prop("target", {
-        x: posXLevel3 - shapeWidthLevel3 / 2 - spaceLevel3,
+        x: posXLevel3 - shapeWidth / 2 - spaceLevel3,
         y: 730,
       });
       shadowLink.attr("line", { targetMarker: { type: "none" } });
@@ -652,11 +331,11 @@ const PaperScreen = () => {
       });
       var shadowLink = new shapes.standard.Link();
       shadowLink.prop("source", {
-        x: spaceLevel3 + shapeWidthLevel3 / 2,
+        x: spaceLevel3 + shapeWidth / 2,
         y: 520,
       });
       shadowLink.prop("target", {
-        x: posXLevel3 - shapeWidthLevel3 / 2 - spaceLevel3,
+        x: posXLevel3 - shapeWidth / 2 - spaceLevel3,
         y: 520,
       });
       shadowLink.attr("line", { targetMarker: { type: "none" } });

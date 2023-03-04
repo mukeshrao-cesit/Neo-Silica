@@ -633,6 +633,8 @@ function App() {
           setShowColorsoption(false);
           setShowColors(false);
         }
+        console.log(cellView);
+        console.log(cellView.model.get("name"));
         setElement(cellView);
       });
 
@@ -705,6 +707,7 @@ function App() {
             y < target.top + paper.$el.height()
           ) {
             var s = flyShape.clone();
+            s.set("TR", Math.random() * 1000 + 1);
             s.position(x - target.left - offset.x, y - target.top - offset.y);
             // s.addPorts([
             //   {
