@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { q1Shape, verticalLine1 } from "./1.Shape.js";
 import { totalBox } from "./TotalBox";
 import { q2Shape, verticalLine2 } from "./2.Shape";
+import { q3Shape, verticalLine3 } from "./3.shape";
 
 const PaperScreen = () => {
   //STATES FOR PAPER
@@ -165,11 +166,10 @@ const PaperScreen = () => {
       );
       let horizontalLine1 = resultQ2.horizondalLink1;
       let horizontalLine2 = resultQ2.horizondalLink2;
-
+      horizondalStarts = 0;
       graph.addCell(result);
       verticalLine2(
-        horizondalStarts1,
-        horizondalStarts2,
+        horizondalStarts,
         horizontalLine1,
         horizontalLine2,
         dia,
@@ -205,178 +205,26 @@ const PaperScreen = () => {
 
       ////---------------------------------------LEVEL 3 Started   ----------------------------------------
       // Math.round(paperWidth / level3.length) - 10 * level3.length;
-      let spaceLevel3 = papersWidth - shapeWidth * level3.length;
-      spaceLevel3 = spaceLevel3 / (level3.length + 1);
-      let posXLevel3 = spaceLevel3;
-      let posYLevel3 = 580;
-      let targetPortsArray = [];
-      let xValue = spaceLevel3 + shapeWidth / 2;
-      result = [];
-      for (let i = 0; i < level3.length; i++) {
-        targetPortsArray.push({ x: xValue, y: 730 });
-        const rectangleShape = new shapes.basic.Rhombus({
-          position: {
-            x: posXLevel3,
-            y: posYLevel3,
-          },
-          size: {
-            width: 130,
-            height: 90,
-          },
-          attrs: {
-            text: {
-              text: `Level 3 `,
-            },
-          },
-        });
-        var subgroupPort1 = {
-          label: {
-            position: {
-              name: "right",
-            },
-            markup: [
-              {
-                tagName: "text",
-                selector: "label",
-              },
-            ],
-          },
-          attrs: {
-            portBody: {
-              magnet: true,
-              width: 5,
-              height: 10,
-              x: shapeWidth / 2 - 2,
-              y: 65,
-              fill: "black",
-            },
-          },
-          markup: [
-            {
-              tagName: "rect",
-              selector: "portBody",
-            },
-          ],
-        };
-        var subgroupPort2 = {
-          label: {
-            position: {
-              name: "right",
-            },
-            markup: [
-              {
-                tagName: "text",
-                selector: "label",
-              },
-            ],
-          },
-          attrs: {
-            portBody: {
-              magnet: true,
-              width: 5,
-              height: 10,
-              x: shapeWidth / 2 - 3,
-              y: -77,
-              fill: "black",
-            },
-          },
-          markup: [
-            {
-              tagName: "rect",
-              selector: "portBody",
-            },
-          ],
-        };
-        rectangleShape.addPort(subgroupPort1);
-        rectangleShape.addPort(subgroupPort2);
-
-        result.push(rectangleShape);
-        posXLevel3 = posXLevel3 + spaceLevel3 + shapeWidth;
-        xValue = xValue + shapeWidth + spaceLevel3;
-      }
+      const resultQ3 = q3Shape(
+        shapes,
+        papersWidth,
+        shapeWidth,
+        level3,
+        result,
+        graph
+      );
       graph.addCell(result);
-      var shadowLink = new shapes.standard.Link();
-      shadowLink.prop("source", {
-        x: spaceLevel3 + shapeWidth / 2,
-        y: 730,
-      });
-      shadowLink.prop("target", {
-        x: posXLevel3 - shapeWidth / 2 - spaceLevel3,
-        y: 730,
-      });
-      shadowLink.attr("line", { targetMarker: { type: "none" } });
-      shadowLink.label(0, {
-        markup: [
-          {
-            tagName: "rect",
-            selector: "body",
-          },
-          {
-            tagName: "text",
-            selector: "label",
-          },
-        ],
-      });
-      shadowLink.attr("line/stroke", "black");
-      shadowLink.addTo(graph);
       drawData = graph.toJSON();
+      horizondalStarts = 0;
       cells = drawData.cells;
-      cells = drawData.cells.filter((item) => {
-        let pos = item.position;
-        if (item.type !== "standard.Link" && !item.type.includes("link")) {
-          if (pos["y"] === 580) {
-            return item;
-          }
-        }
-      });
-      var shadowLink = new shapes.standard.Link();
-      shadowLink.prop("source", {
-        x: spaceLevel3 + shapeWidth / 2,
-        y: 520,
-      });
-      shadowLink.prop("target", {
-        x: posXLevel3 - shapeWidth / 2 - spaceLevel3,
-        y: 520,
-      });
-      shadowLink.attr("line", { targetMarker: { type: "none" } });
-      shadowLink.label(0, {
-        markup: [
-          {
-            tagName: "rect",
-            selector: "body",
-          },
-          {
-            tagName: "text",
-            selector: "label",
-          },
-        ],
-      });
-      shadowLink.attr("line/stroke", "black");
-      shadowLink.addTo(graph);
-      for (let i = 0; i < cells.length; i++) {
-        if (
-          cells[i].type !== "standard.Link" &&
-          !cells[i].type.includes("link")
-        ) {
-          var shadowLink = new dia.Link();
-          var shadowLink1 = new dia.Link();
-          shadowLink1.prop("source", {
-            id: cells[i].id,
-            magnet: "portBody",
-            port: cells[i].ports.items[0].id,
-          });
-          shadowLink1.prop("target", targetPortsArray[i]);
-          // shadowLink.source(cells[i].ports.items[0].id)
-          shadowLink.prop("source", {
-            id: cells[i].id,
-            magnet: "portBody",
-            port: cells[i].ports.items[1].id,
-          });
-          shadowLink.prop("target", { x: targetPortsArray[i].x, y: 520 });
-          shadowLink.addTo(graph);
-          shadowLink1.addTo(graph);
-        }
-      }
+      verticalLine3(
+        horizondalStarts,
+        resultQ3.horizondalLink1,
+        resultQ3.horizondalLink2,
+        dia,
+        graph,
+        resultQ3.connectPoint
+      );
       //------------------------------------------------------------------------------------------------------
     }
     // return () => ac.abort();
