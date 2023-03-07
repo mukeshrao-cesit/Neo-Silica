@@ -234,6 +234,7 @@ const LandingScreen = () => {
               <Icon
                 onClick={handleOpen}
                 baseClassName="material-icons-two-tone"
+                className="icon"
               >
                 add_circle
               </Icon>
@@ -411,6 +412,7 @@ const LandingScreen = () => {
               <Icon
                 onClick={handleOpen1}
                 baseClassName="material-icons-two-tone"
+                className="icon"
               >
                 add_circle
               </Icon>

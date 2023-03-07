@@ -35,10 +35,14 @@
     width: 90%;
 }
 .paperhead1{
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bolder;
     color: rgb(94, 53, 75);
     font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.icon{
+  margin-left: 5px;
+  padding-top: 2px;
 }
 .modalInner{
     display: flex;
