@@ -129,32 +129,6 @@ const PaperScreen = () => {
       );
       let totalBox1;
       let totalBox2;
-      if (level2.length > 0) {
-        totalBox1 = totalBox(
-          shapes,
-          resultQ1.space,
-          shapeWidth,
-          resultQ1.underlineLength,
-          170
-        );
-        totalBox2 = totalBox(
-          shapes,
-          resultQ1.space,
-          shapeWidth,
-          resultQ1.underlineLength,
-          220
-        );
-        graph.addCell([totalBox1, totalBox2]);
-        var link = new dia.Link();
-        link.source(totalBox1);
-        link.target(totalBox2);
-
-        var linkJoin = new dia.Link();
-        linkJoin.source(horizontalLine);
-        linkJoin.target(totalBox1);
-        link.addTo(graph);
-        linkJoin.addTo(graph);
-      }
 
       result = [];
 
@@ -184,20 +158,63 @@ const PaperScreen = () => {
       let cells = drawData.cells;
       let totalBox3;
       let totalBox4;
+      if (level2.length > 0) {
+        totalBox1 = totalBox(
+          shapes,
+          resultQ1.space,
+          shapeWidth,
+          resultQ1.underlineLength,
+          170,
+          resultQ1.totalTR
+        );
+        totalBox2 = totalBox(
+          shapes,
+          resultQ1.space,
+          shapeWidth,
+          resultQ1.underlineLength,
+          220,
+          resultQ2.totalTR
+        );
+        graph.addCell([totalBox1, totalBox2]);
+        var link = new dia.Link();
+        link.source(totalBox1);
+        link.target(totalBox2);
+
+        var linkJoin = new dia.Link();
+        linkJoin.source(horizontalLine);
+        linkJoin.target(totalBox1);
+        link.addTo(graph);
+        linkJoin.addTo(graph);
+      }
+
+      ////---------------------------------------LEVEL 2  closed ----------------------------------------
+
+      ////---------------------------------------LEVEL 3 Started   ----------------------------------------
+      // Math.round(paperWidth / level3.length) - 10 * level3.length;
+      const resultQ3 = q3Shape(
+        shapes,
+        papersWidth,
+        shapeWidth,
+        level3,
+        result,
+        graph
+      );
       if (level3.length > 0) {
         totalBox3 = totalBox(
           shapes,
           resultQ2.space,
           shapeWidth,
           resultQ2.underlineLength,
-          450
+          450,
+          resultQ2.totalTR
         );
         totalBox4 = totalBox(
           shapes,
           resultQ2.space,
           shapeWidth,
           resultQ2.underlineLength,
-          500
+          500,
+          resultQ3.totalTR
         );
 
         graph.addCell([totalBox3, totalBox4]);
@@ -217,18 +234,6 @@ const PaperScreen = () => {
         linkJoin1.addTo(graph);
         linkJoin2.addTo(graph);
       }
-      ////---------------------------------------LEVEL 2  closed ----------------------------------------
-
-      ////---------------------------------------LEVEL 3 Started   ----------------------------------------
-      // Math.round(paperWidth / level3.length) - 10 * level3.length;
-      const resultQ3 = q3Shape(
-        shapes,
-        papersWidth,
-        shapeWidth,
-        level3,
-        result,
-        graph
-      );
       graph.addCell(result);
       drawData = graph.toJSON();
       horizondalStarts = 0;
@@ -246,6 +251,7 @@ const PaperScreen = () => {
       link.source(totalBox4);
       link.target(resultQ3.horizondalLink1);
       link.addTo(graph);
+
       //------------------------------------------------------------------------------------------------------
     }
     // return () => ac.abort();

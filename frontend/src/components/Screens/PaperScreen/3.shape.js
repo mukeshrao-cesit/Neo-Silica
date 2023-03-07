@@ -11,9 +11,11 @@ export const q3Shape = (
   let posX = space;
   let posY = 580;
   let targetPortsArray = [];
+  let totalTR = 0;
   let xValue = space + shapeWidth / 2;
   for (let i = 0; i < level.length; i++) {
     targetPortsArray.push({ x: xValue, y: 730 });
+    totalTR += Math.round(level[i].TR);
     const rectangleShape = new shapes.basic.Rhombus({
       position: {
         x: posX,
@@ -25,7 +27,7 @@ export const q3Shape = (
       },
       attrs: {
         text: {
-          text: `Level 3 `,
+          text: `E${i + 1}\nTR ${Math.round(level[i].TR)}`,
         },
       },
     });
@@ -154,6 +156,7 @@ export const q3Shape = (
     horizondalLink1: horizondalLink1,
     horizondalLink2: horizondalLink2,
     underlineLength: underlineLength,
+    totalTR: totalTR,
   };
 };
 

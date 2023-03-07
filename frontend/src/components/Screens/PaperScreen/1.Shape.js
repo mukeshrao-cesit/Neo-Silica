@@ -14,9 +14,11 @@ export const q1Shape = (
   // targetPortsArray is used to store port x value and y value
   let targetPortsArray = [];
   let xValue = space + shapeWidth / 2;
+  let totalTR = 0;
   // This loop is used for creating  n number of rectangle shapes
   for (let i = 0; i < level.length; i++) {
     targetPortsArray.push({ x: xValue, y: 170 });
+    totalTR += Math.round(level[i].TR);
     //Creating rectangle shapes
     const rectangleShape = new shapes.basic.Circle({
       position: {
@@ -29,7 +31,7 @@ export const q1Shape = (
       },
       attrs: {
         text: {
-          text: `Level 1 `,
+          text: `Q${i + 1}\n TR ${Math.round(level[i].TR)} `,
         },
       },
     });
@@ -105,6 +107,7 @@ export const q1Shape = (
     connectPoint: connectPoint,
     horizondalLink: horizondalLink,
     connectPoint: connectPoint,
+    totalTR: totalTR,
   };
 };
 

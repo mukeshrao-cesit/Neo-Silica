@@ -12,9 +12,11 @@ export const q2Shape = (
   let posY = 300;
   let targetPortsArray = [];
   let xValue = space + shapeWidth / 2;
+  let totalTR = 0;
 
   for (let i = 0; i < level.length; i++) {
     targetPortsArray.push({ x: xValue, y: 450 });
+    totalTR += Math.round(level[i].TR);
     const rectangleShape = new shapes.basic.Rect({
       position: {
         x: posX,
@@ -26,7 +28,7 @@ export const q2Shape = (
       },
       attrs: {
         text: {
-          text: `Level 2 `,
+          text: `C${i + 1}\nTR ${Math.round(level[i].TR)} `,
         },
       },
     });
@@ -175,6 +177,7 @@ export const q2Shape = (
     horizondalLink1: horizondalLink1,
     horizondalLink2: horizondalLink2,
     underlineLength: underlineLength,
+    totalTR: totalTR,
   };
 };
 
