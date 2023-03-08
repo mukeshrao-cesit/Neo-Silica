@@ -7,6 +7,9 @@ import { q1Shape, verticalLine1 } from "./1.Shape.js";
 import { totalBox } from "./TotalBox";
 import { q2Shape, verticalLine2 } from "./2.Shape";
 import { q3Shape, verticalLine3 } from "./3.shape";
+import { Button } from "react-bootstrap";
+import Modal from "react-modal";
+import html2canvas from "html2canvas";
 
 const PaperScreen = () => {
   //STATES FOR PAPER
@@ -18,6 +21,110 @@ const PaperScreen = () => {
   const params = useParams();
   const [jsonData, setJsonData] = useState();
   const [savedpaper, setSavedPaper] = useState({});
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  // CUSTOM STYLE FOR MODAL
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      border: "none",
+    },
+  };
+
+  let subtitle;
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    //subtitle.style.color = "#f00";
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  //TO CONVERT DIV ELEMENT TO CANVAS
+  const downloadImage = () => {
+    setIsOpen(true);
+    html2canvas(document.querySelector("#paper")).then((canvas) => {
+      canvas.id = "newcanvas";
+      canvas.style.width = "500px";
+      canvas.style.height = "70%";
+      // canvas.style.display = "none";
+      const element = document.getElementById("newcanvas");
+      if (element) {
+        element.remove();
+      }
+      const menu = document.querySelector("#menu");
+      menu.appendChild(canvas);
+    });
+  };
+
+  //TO DOWNLOAD GRAPH INTO IMAGE FORMAT
+  const downloadimage2 = async (type) => {
+    var canvas = document.getElementById("newcanvas");
+    var imgData = canvas.toDataURL("image/jpeg", 1.0);
+    if (type === "jpeg") {
+      canvas.style.backgroundColor = "#FFFFFF";
+      // var image = canvas.toDataURL("image/png", 1.0);
+      var link = document.createElement("a");
+      link.download = "my-image.jpeg";
+      link.href = imgData;
+      link.click();
+    } else if (type === "png") {
+      canvas.style.backgroundColor = "#FFFFFF";
+      var link = document.createElement("a");
+      link.download = "my-image.png";
+      link.href = imgData;
+      link.click();
+    } else if (type === "pdf") {
+      var pdf = new jsPDF();
+
+      pdf.addImage(imgData, "JPEG", 0, 0);
+      pdf.save("download.pdf");
+    } else if (type === "svg") {
+      var svgDoc = paper.svg;
+      var serializer = new XMLSerializer();
+      var source = serializer.serializeToString(svgDoc);
+
+      //add name spaces.
+      if (
+        !source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)
+      ) {
+        source = source.replace(
+          /^<svg/,
+          '<svg xmlns="http://www.w3.org/2000/svg"'
+        );
+      }
+      if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+        source = source.replace(
+          /^<svg/,
+          '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'
+        );
+      }
+      //add xml declaration
+      source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+
+      //convert svg source to URI data scheme.
+      var url =
+        "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+
+      //set url value to a element's href attribute.
+      var link = document.createElement("a");
+      link.download = "my-image.svg";
+
+      link.href = url;
+      link.click();
+    }
+  };
 
   async function fetchData() {
     const { data } = await axios.get(`/paper/${params.id}`);
@@ -267,6 +374,62 @@ const PaperScreen = () => {
   }, [paper]);
   return (
     <div className="papermainDiv" style={{ width: paperScreenWidth + "px" }}>
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div>
+          <div style={{ border: "1px solid black" }} id="menu"></div>
+          <div className="btndown">
+            <Button
+              className="btn-danger d-btn mt-5"
+              onClick={() => {
+                downloadimage2("jpeg");
+              }}
+            >
+              JPEG
+            </Button>
+            <Button
+              className="btn-danger d-btn mt-5"
+              onClick={() => {
+                downloadimage2("png");
+              }}
+            >
+              PNG
+            </Button>
+            <Button
+              className="btn-danger d-btn mt-5"
+              onClick={() => {
+                downloadimage2("svg");
+              }}
+            >
+              SVG
+            </Button>
+            <Button
+              className="btn-danger d-btn mt-5"
+              onClick={() => {
+                downloadimage2("pdf");
+              }}
+            >
+              PDF
+            </Button>
+            <Button
+              className="btn-danger d-btn mt-5"
+              onClick={() => {
+                downloadimage2("autocad");
+              }}
+            >
+              AUTOCAD
+            </Button>
+          </div>
+        </div>
+      </Modal>
+      <button className="download" onClick={downloadImage}>
+        <img width='30px' height='30px' src="/images/download2.png"></img>
+      </button>
       <div id="paper"></div>
     </div>
   );

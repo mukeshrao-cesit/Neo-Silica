@@ -32,3 +32,9 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   padding-left: 40px;
 }
+.download {
+  position: absolute;
+  z-index: 1;
+  margin: 20px;
+  padding: 10px;
+}
