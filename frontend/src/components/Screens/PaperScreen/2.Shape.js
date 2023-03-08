@@ -107,11 +107,11 @@ export const q2Shape = (
   var horizondalLink2 = new shapes.standard.Link();
   horizondalLink2.prop("source", {
     x: space + shapeWidth / 2,
-    y: 450,
+    y: 440,
   });
   horizondalLink2.prop("target", {
     x: posX - shapeWidth / 2 - space,
-    y: 450,
+    y: 440,
   });
   horizondalLink2.attr("line", { targetMarker: { type: "none" } });
   horizondalLink2.label(0, {
@@ -152,11 +152,11 @@ export const q2Shape = (
   var horizondalLink1 = new shapes.standard.Link();
   horizondalLink1.prop("source", {
     x: space + shapeWidth / 2,
-    y: 240,
+    y: 250,
   });
   horizondalLink1.prop("target", {
     x: posX - shapeWidth / 2 - space,
-    y: 240,
+    y: 250,
   });
   horizondalLink1.attr("line", { targetMarker: { type: "none" } });
   horizondalLink1.label(0, {

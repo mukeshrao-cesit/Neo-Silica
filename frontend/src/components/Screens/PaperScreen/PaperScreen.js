@@ -205,7 +205,7 @@ const PaperScreen = () => {
           resultQ2.space,
           shapeWidth,
           resultQ2.underlineLength,
-          450,
+          440,
           resultQ2.totalTR
         );
         totalBox4 = totalBox(

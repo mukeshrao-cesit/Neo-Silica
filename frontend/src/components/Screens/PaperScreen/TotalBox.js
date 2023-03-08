@@ -8,16 +8,18 @@ export const totalBox = (
 ) => {
   const ConnectionRectangle = new shapes.basic.Rect({
     position: {
-      x: space + shapeWidth / 2 + underlineLength / 2 - 50,
+      x: space + shapeWidth / 2 + underlineLength / 2 - 60,
       y: yAxis,
     },
     size: {
-      width: 100,
-      height: 20,
+      width: 120,
+      height: 30,
     },
     attrs: {
       text: {
         text: `Total : ${totalTR} `,
+        fontWeight: "600",
+        fontSize: "16",
       },
     },
   });
