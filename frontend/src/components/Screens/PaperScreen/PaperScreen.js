@@ -30,8 +30,8 @@ const PaperScreen = () => {
     let spaceLevel = (level.length + 3) * 10;
     let width = level.length * 130;
     if (paperScreenWidth < width + spaceLevel) {
-      setPaperScreenWidth(width + spaceLevel + 10);
-      paper.setDimensions(width + spaceLevel + 10, 1000);
+      setPaperScreenWidth(width + spaceLevel + 20);
+      paper.setDimensions(width + spaceLevel + 20, 1000);
       return width + spaceLevel + 10;
     }
   }
@@ -88,7 +88,7 @@ const PaperScreen = () => {
           level3.push(item);
         }
       });
-      let papersWidth = 1680;
+      let papersWidth = 1685;
       let shapeWidth = 130;
 
       let spaceLevel1_1 = paper.$el.width() - shapeWidth * level1.length;
