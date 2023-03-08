@@ -32,6 +32,7 @@ export const q2Shape = (
           text: `C${i + 1}\n\nTR ${Math.round(level[i].TR)} `,
           fill: "#ffffff",
           fontWeight: "600",
+          fontSize: "16",
         },
       },
     });
