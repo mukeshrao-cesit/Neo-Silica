@@ -4,9 +4,9 @@ import html2canvas from "html2canvas";
 import $ from "jquery";
 import jsPDF from "jspdf";
 import { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import Modal from "react-modal";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "../../util/axiosConfig";
 import "./Draw.css";
 import {
@@ -38,7 +38,6 @@ function App() {
     new dia.Graph({}, { cellNamespace: shapes })
   );
 
-  const [photo, selectPhoto] = useState(null);
 
   //STATES FOR OPEN AND CLOSE MODAL
   const [modalIsOpen, setIsOpen] = useState(false);

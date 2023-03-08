@@ -10,6 +10,7 @@ import { q3Shape, verticalLine3 } from "./3.shape";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const PaperScreen = () => {
   //STATES FOR PAPER
@@ -35,8 +36,6 @@ const PaperScreen = () => {
       border: "none",
     },
   };
-
-  let subtitle;
 
   function openModal() {
     setIsOpen(true);
@@ -262,7 +261,6 @@ const PaperScreen = () => {
         resultQ2.connectPoint
       );
       drawData = graph.toJSON();
-      let cells = drawData.cells;
       let totalBox3;
       let totalBox4;
       if (level2.length > 0) {
@@ -344,7 +342,7 @@ const PaperScreen = () => {
       graph.addCell(result);
       drawData = graph.toJSON();
       horizondalStarts = 0;
-      cells = drawData.cells;
+      const cells = drawData.cells;
       verticalLine3(
         horizondalStarts,
         resultQ3.horizondalLink1,

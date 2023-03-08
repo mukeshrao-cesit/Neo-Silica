@@ -294,7 +294,7 @@ const LandingScreen = () => {
                       variant="contained"
                       style={{ marginLeft: "200px", marginTop: "10px" }}
                     >
-                      Crete
+                      Create
                     </Button>
                   )}
                 </form>
