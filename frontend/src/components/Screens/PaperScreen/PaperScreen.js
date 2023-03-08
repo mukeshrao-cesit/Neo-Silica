@@ -428,7 +428,7 @@ const PaperScreen = () => {
         </div>
       </Modal>
       <button className="download" onClick={downloadImage}>
-        <img width='30px' height='30px' src="/images/download2.png"></img>
+        <img width='30px' height='30px' src="/images/download2.png"/> Export
       </button>
       <div id="paper"></div>
     </div>
