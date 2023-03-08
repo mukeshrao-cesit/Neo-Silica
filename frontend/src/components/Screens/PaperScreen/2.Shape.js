@@ -27,8 +27,11 @@ export const q2Shape = (
         height: 90,
       },
       attrs: {
+        rect: { fill: "rgb(114, 207, 52)", stroke: "rgb(114, 207, 52)" },
         text: {
-          text: `C${i + 1}\nTR ${Math.round(level[i].TR)} `,
+          text: `C${i + 1}\n\nTR ${Math.round(level[i].TR)} `,
+          fill: "#ffffff",
+          fontWeight: "600",
         },
       },
     });

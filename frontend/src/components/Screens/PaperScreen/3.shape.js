@@ -26,11 +26,18 @@ export const q3Shape = (
         height: 90,
       },
       attrs: {
+        path: {
+          fill: "rgb(90, 92, 88)",
+          stroke: "rgb(90, 92, 88)",
+        },
         text: {
-          text: `E${i + 1}\nTR ${Math.round(level[i].TR)}`,
+          text: `E${i + 1}\n\nTR ${Math.round(level[i].TR)}`,
+          fill: "#ffffff",
+          fontWeight: "600",
         },
       },
     });
+    console.log(rectangleShape);
     var subgroupPort1 = {
       label: {
         position: {

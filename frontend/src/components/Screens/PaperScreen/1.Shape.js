@@ -30,8 +30,14 @@ export const q1Shape = (
         height: 90,
       },
       attrs: {
+        circle: {
+          fill: "rgb(52, 75, 207)",
+          stroke: "rgb(52, 75, 207)",
+        },
         text: {
-          text: `Q${i + 1}\n TR ${Math.round(level[i].TR)} `,
+          text: `Q${i + 1}\n\nTR ${Math.round(level[i].TR)} `,
+          fill: "#ffffff",
+          fontWeight: "600",
         },
       },
     });
