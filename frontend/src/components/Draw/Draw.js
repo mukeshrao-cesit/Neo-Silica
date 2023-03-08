@@ -732,6 +732,9 @@ function App() {
 
           let jsonObject = graph.toJSON();
           let jsonString = JSON.stringify(jsonObject);
+          const { dummydata } = axios.post(`/paper/${params.id}`, {
+            data: jsonString,
+          });
           $("body").off("mousemove.fly").off("mouseup.fly");
           flyShape.remove();
           $("#flyPaper").remove();

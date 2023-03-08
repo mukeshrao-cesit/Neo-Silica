@@ -8,7 +8,7 @@ export const totalBox = (
 ) => {
   const ConnectionRectangle = new shapes.basic.Rect({
     position: {
-      x: space + shapeWidth / 2 + (underlineLength / 2 - 30),
+      x: space + shapeWidth / 2 + underlineLength / 2 - 50,
       y: yAxis,
     },
     size: {
