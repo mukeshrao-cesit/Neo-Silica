@@ -8,7 +8,6 @@ export const q1Shape = (
 ) => {
   let space = papersWidth - shapeWidth * level.length;
   space = Math.round(space / (level.length + 1));
-  console.log(papersWidth, space);
   let posX = space;
   let posY = 40;
   // targetPortsArray is used to store port x value and y value

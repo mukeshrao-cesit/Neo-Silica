@@ -37,7 +37,6 @@ export const q3Shape = (
         },
       },
     });
-    console.log(rectangleShape);
     var subgroupPort1 = {
       label: {
         position: {

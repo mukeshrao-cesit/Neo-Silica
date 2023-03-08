@@ -354,10 +354,12 @@ const PaperScreen = () => {
         resultQ3.connectPoint
       );
 
-      var link = new dia.Link();
-      link.source(totalBox4);
-      link.target(resultQ3.horizondalLink1);
-      link.addTo(graph);
+      if (level3.length > 0) {
+        var link = new dia.Link();
+        link.source(totalBox4);
+        link.target(resultQ3.horizondalLink1);
+        link.addTo(graph);
+      }
 
       //------------------------------------------------------------------------------------------------------
     }
@@ -374,6 +376,7 @@ const PaperScreen = () => {
   }, [paper]);
   return (
     <div className="papermainDiv" style={{ width: paperScreenWidth + "px" }}>
+      <div id="paper"></div>
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
@@ -427,10 +430,13 @@ const PaperScreen = () => {
           </div>
         </div>
       </Modal>
-      <button className="download" onClick={downloadImage}>
-        <img width='30px' height='30px' src="/images/download2.png"/> Export
+      <button
+        style={{ position: "absolute", top: "110vh" }}
+        className="download"
+        onClick={downloadImage}
+      >
+        <img width="30px" height="30px" src="/images/download2.png" /> Export
       </button>
-      <div id="paper"></div>
     </div>
   );
 };
