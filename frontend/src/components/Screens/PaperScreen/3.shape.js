@@ -22,8 +22,8 @@ export const q3Shape = (
         y: posY,
       },
       size: {
-        width: 130,
-        height: 90,
+        width: 90,
+        height: 60,
       },
       attrs: {
         path: {
@@ -34,6 +34,7 @@ export const q3Shape = (
           text: `E${i + 1}\n\nTR ${Math.round(level[i].TR)}`,
           fill: "#ffffff",
           fontWeight: "600",
+          fontSize: "10",
         },
       },
     });
@@ -55,7 +56,7 @@ export const q3Shape = (
           width: 5,
           height: 10,
           x: shapeWidth / 2 - 2,
-          y: 65,
+          y: 43,
           fill: "black",
         },
       },
@@ -84,7 +85,7 @@ export const q3Shape = (
           width: 5,
           height: 10,
           x: shapeWidth / 2 - 3,
-          y: -77,
+          y: -52,
           fill: "black",
         },
       },

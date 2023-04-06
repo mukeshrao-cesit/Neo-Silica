@@ -23,8 +23,8 @@ export const q2Shape = (
         y: posY,
       },
       size: {
-        width: 130,
-        height: 90,
+        width: 90,
+        height: 60,
       },
       attrs: {
         rect: { fill: "rgb(114, 207, 52)", stroke: "rgb(114, 207, 52)" },
@@ -32,7 +32,7 @@ export const q2Shape = (
           text: `C${i + 1}\n\nTR ${Math.round(level[i].TR)} `,
           fill: "#ffffff",
           fontWeight: "600",
-          fontSize: "16",
+          fontSize: "10",
         },
       },
     });
@@ -54,7 +54,7 @@ export const q2Shape = (
           width: 5,
           height: 10,
           x: shapeWidth / 2 - 2,
-          y: 22,
+          y: 15,
           fill: "black",
         },
       },
@@ -83,7 +83,7 @@ export const q2Shape = (
           width: 5,
           height: 10,
           x: shapeWidth / 2 - 2,
-          y: -33,
+          y: -25,
           fill: "black",
         },
       },
@@ -107,11 +107,11 @@ export const q2Shape = (
   var horizondalLink2 = new shapes.standard.Link();
   horizondalLink2.prop("source", {
     x: space + shapeWidth / 2,
-    y: 440,
+    y: 410,
   });
   horizondalLink2.prop("target", {
     x: posX - shapeWidth / 2 - space,
-    y: 440,
+    y: 410,
   });
   horizondalLink2.attr("line", { targetMarker: { type: "none" } });
   horizondalLink2.label(0, {

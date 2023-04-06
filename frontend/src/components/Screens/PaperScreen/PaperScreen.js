@@ -134,7 +134,7 @@ const PaperScreen = () => {
   }
   function handleWidth(level) {
     let spaceLevel = (level.length + 3) * 10;
-    let width = level.length * 130;
+    let width = level.length * 90;
     if (paperScreenWidth < width + spaceLevel) {
       setPaperScreenWidth(width + spaceLevel + 20);
       paper.setDimensions(width + spaceLevel + 20, 1000);
@@ -195,7 +195,7 @@ const PaperScreen = () => {
         }
       });
       let papersWidth = 1685;
-      let shapeWidth = 130;
+      let shapeWidth = 90;
 
       let spaceLevel1_1 = paper.$el.width() - shapeWidth * level1.length;
       spaceLevel1_1 = Math.round(spaceLevel1_1 / (level1.length + 1));
@@ -216,6 +216,7 @@ const PaperScreen = () => {
       //---------------------------------------  LEVEL 1 ---------------------------------------->>
       //shapeWidth: here we are calculating level one shape width
       const resultQ1 = q1Shape(
+        dia,
         shapes,
         papersWidth,
         shapeWidth,
@@ -269,7 +270,7 @@ const PaperScreen = () => {
           resultQ1.space,
           shapeWidth,
           resultQ1.underlineLength,
-          170,
+          130,
           resultQ1.totalTR
         );
         totalBox2 = totalBox(
@@ -310,7 +311,7 @@ const PaperScreen = () => {
           resultQ2.space,
           shapeWidth,
           resultQ2.underlineLength,
-          440,
+          410,
           resultQ2.totalTR
         );
         totalBox4 = totalBox(
