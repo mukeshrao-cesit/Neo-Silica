@@ -1,5 +1,5 @@
 export const q1Shape = (
-  dia,
+  isSpringCondensorPresent,
   shapes,
   papersWidth,
   shapeWidth,
@@ -91,9 +91,12 @@ export const q1Shape = (
   }
   let underlineLength =
     posX - shapeWidth / 2 - space - (space + shapeWidth / 2);
+  console.log(underlineLength);
   var connectPoint = underlineLength / (level.length - 1);
+  console.log(connectPoint);
   var horizondalLink = new shapes.standard.Link();
   var dottedLink = new shapes.standard.Link();
+  let potnX;
   if (flag === 0) {
     horizondalLink.prop("source", {
       x: space + shapeWidth / 2,
@@ -118,7 +121,7 @@ export const q1Shape = (
     });
     horizondalLink.attr("line/stroke", "black");
   } else {
-    let potnX = posX - shapeWidth * flag - space * flag;
+    potnX = posX - shapeWidth * flag - space * flag;
     console.log(potnX, posX, space);
     horizondalLink.prop("source", {
       x: space + shapeWidth / 2,
@@ -152,8 +155,7 @@ export const q1Shape = (
       x: posX - shapeWidth / 2 - space,
       y: 130,
     });
-    dottedLink.router("orthogonal");
-    dottedLink.connector("rounded");
+    dottedLink.attr("line", { targetMarker: { type: "none" } });
     dottedLink.attr({
       line: {
         stroke: "gray",
@@ -162,7 +164,14 @@ export const q1Shape = (
       },
     });
   }
-  console.log(horizondalLink, dottedLink);
+  dottedLink.prop("source", {
+    id: horizondalLink.id,
+    anchor: {
+      name: "connectionLength",
+      args: { length: potnX },
+    },
+  });
+  isSpringCondensorPresent = true;
   horizondalLink.addTo(graph);
   dottedLink.addTo(graph);
 

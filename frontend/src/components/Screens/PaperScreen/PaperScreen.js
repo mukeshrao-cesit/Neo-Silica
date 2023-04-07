@@ -213,10 +213,12 @@ const PaperScreen = () => {
       } else if (spaceLevel3_3 < 10) {
         papersWidth = handleWidth(level3);
       }
+
+      let isSpringCondensorPresent = false;
       //---------------------------------------  LEVEL 1 ---------------------------------------->>
       //shapeWidth: here we are calculating level one shape width
       const resultQ1 = q1Shape(
-        dia,
+        isSpringCondensorPresent,
         shapes,
         papersWidth,
         shapeWidth,
