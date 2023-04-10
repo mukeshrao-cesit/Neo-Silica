@@ -1,5 +1,4 @@
 export const q1Shape = (
-  isSpringCondensorPresent,
   shapes,
   papersWidth,
   shapeWidth,
@@ -10,8 +9,8 @@ export const q1Shape = (
   let space = papersWidth - shapeWidth * level.length;
   space = Math.round(space / (level.length + 1));
   let posX = space;
-  let posY = 40;
   let flag = 0;
+  let posY = 40;
   let CondensorArray = [];
   let SpringCondensorArray = [];
   for (let i = 0; i < level.length; i++) {
@@ -91,9 +90,7 @@ export const q1Shape = (
   }
   let underlineLength =
     posX - shapeWidth / 2 - space - (space + shapeWidth / 2);
-  console.log(underlineLength);
   var connectPoint = underlineLength / (level.length - 1);
-  console.log(connectPoint);
   var horizondalLink = new shapes.standard.Link();
   var dottedLink = new shapes.standard.Link();
   let potnX;
@@ -122,7 +119,6 @@ export const q1Shape = (
     horizondalLink.attr("line/stroke", "black");
   } else {
     potnX = posX - shapeWidth * flag - space * flag;
-    console.log(potnX, posX, space);
     horizondalLink.prop("source", {
       x: space + shapeWidth / 2,
       y: 130,
@@ -159,8 +155,8 @@ export const q1Shape = (
     dottedLink.attr({
       line: {
         stroke: "gray",
-        strokeWidth: 4,
-        strokeDasharray: "4 2",
+        strokeWidth: 3,
+        strokeDasharray: "5 5",
       },
     });
   }
@@ -171,11 +167,10 @@ export const q1Shape = (
       args: { length: potnX },
     },
   });
-  isSpringCondensorPresent = true;
   horizondalLink.addTo(graph);
   dottedLink.addTo(graph);
-
   return {
+    flag: flag,
     posX: posX,
     space: space,
     targetPortsArray: targetPortsArray,
@@ -189,20 +184,34 @@ export const q1Shape = (
 };
 
 export const verticalLine1 = (
+  shapes,
+  flag,
   horizondalStarts,
   horizontalLine,
+  dottedLink,
   dia,
   graph,
   connectPoint
 ) => {
   let cells = graph.toJSON().cells;
-  for (let i = 0; i < cells.length; i++) {
-    if (cells[i].type !== "standard.Link" && !cells[i].type.includes("link")) {
-      var horizondalLink = new dia.Link();
+  let nl = 0;
+  let dottedLinkStarts = Math.round(connectPoint);
+  let newCells = [];
+  cells.forEach((elem) => {
+    if (elem.type !== "standard.Link" && !elem.type.includes("link")) {
+      nl++;
+      newCells.push(elem);
+    }
+  });
+
+  nl = nl - flag;
+  if (flag === 0) {
+    for (let i = 0; i < newCells.length; i++) {
+      let horizondalLink = new dia.Link();
       horizondalLink.prop("source", {
-        id: cells[i].id,
+        id: newCells[i].id,
         magnet: "portBody",
-        port: cells[i].ports.items[0].id,
+        port: newCells[i].ports.items[0].id,
       });
 
       horizondalLink.prop("target", {
@@ -216,6 +225,56 @@ export const verticalLine1 = (
       horizondalStarts += Math.round(connectPoint);
       // console.log(linkView.model.target());
       horizondalLink.addTo(graph);
+    }
+  } else {
+    for (let i = 0; i < newCells.length; i++) {
+      let horizondalLink = new dia.Link();
+      let dottedVerticalLink = new shapes.standard.Link({
+        attrs: {
+          line: {
+            stroke: "gray",
+            strokeWidth: 3,
+            strokeDasharray: "5 5",
+          },
+        },
+      });
+      dottedVerticalLink.attr("line", { targetMarker: { type: "none" } });
+      console.log(nl, i);
+      if (i < nl) {
+        console.log("enteres", i);
+        horizondalLink.prop("source", {
+          id: newCells[i].id,
+          magnet: "portBody",
+          port: newCells[i].ports.items[0].id,
+        });
+        horizondalLink.prop("target", {
+          id: horizontalLine.id,
+          anchor: {
+            name: "connectionLength",
+            args: { length: horizondalStarts },
+          },
+        });
+        horizondalStarts += Math.round(connectPoint);
+      } else {
+        console.log("dotted En", i);
+        dottedVerticalLink.prop("source", {
+          id: newCells[i].id,
+          magnet: "portBody",
+          port: newCells[i].ports.items[0].id,
+        });
+        dottedVerticalLink.prop("target", {
+          id: dottedLink.id,
+          anchor: {
+            name: "connectionLength",
+            args: { length: dottedLinkStarts },
+          },
+        });
+        dottedLinkStarts += Math.round(connectPoint);
+      }
+
+      // console.log(linkView.model.target());
+      horizondalLink.addTo(graph);
+      dottedVerticalLink.addTo(graph);
     }
   }
 };

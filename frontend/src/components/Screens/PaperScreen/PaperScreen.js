@@ -214,11 +214,9 @@ const PaperScreen = () => {
         papersWidth = handleWidth(level3);
       }
 
-      let isSpringCondensorPresent = false;
       //---------------------------------------  LEVEL 1 ---------------------------------------->>
       //shapeWidth: here we are calculating level one shape width
       const resultQ1 = q1Shape(
-        isSpringCondensorPresent,
         shapes,
         papersWidth,
         shapeWidth,
@@ -230,8 +228,11 @@ const PaperScreen = () => {
       graph.addCell(result);
       let drawData = graph.toJSON();
       verticalLine1(
+        shapes,
+        resultQ1.flag,
         horizondalStarts,
         horizontalLine,
+        resultQ1.dottedLink,
         dia,
         graph,
         resultQ1.connectPoint
