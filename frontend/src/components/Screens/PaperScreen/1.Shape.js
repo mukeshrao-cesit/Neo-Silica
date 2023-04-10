@@ -172,6 +172,7 @@ export const q1Shape = (
   return {
     flag: flag,
     posX: posX,
+    potnX: potnX,
     space: space,
     targetPortsArray: targetPortsArray,
     underlineLength: underlineLength,
@@ -239,9 +240,7 @@ export const verticalLine1 = (
         },
       });
       dottedVerticalLink.attr("line", { targetMarker: { type: "none" } });
-      console.log(nl, i);
       if (i < nl) {
-        console.log("enteres", i);
         horizondalLink.prop("source", {
           id: newCells[i].id,
           magnet: "portBody",
@@ -256,7 +255,6 @@ export const verticalLine1 = (
         });
         horizondalStarts += Math.round(connectPoint);
       } else {
-        console.log("dotted En", i);
         dottedVerticalLink.prop("source", {
           id: newCells[i].id,
           magnet: "portBody",

@@ -289,9 +289,18 @@ const PaperScreen = () => {
         link.source(totalBox1);
         link.target(totalBox2);
 
-        var linkJoin = new dia.Link();
-        linkJoin.source(horizontalLine);
-        linkJoin.target(totalBox1);
+        var linkJoin = new shapes.standard.Link();
+        linkJoin.attr("line", { targetMarker: { type: "none" } });
+        if (resultQ1.flag === 0) {
+          linkJoin.source(horizontalLine);
+          linkJoin.target(totalBox1);
+        } else {
+          linkJoin.prop("source", {
+            x: (resultQ1.posX - shapeWidth / 2) / 2 + 20,
+            y: 130,
+          });
+          linkJoin.target(totalBox1);
+        }
         link.addTo(graph);
         linkJoin.addTo(graph);
       }
